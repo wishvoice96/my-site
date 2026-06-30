@@ -1,0 +1,1725 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMART STAY OWNER</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --neo-yellow:#FFFF00;
+  --neo-orange:#FF6B35;
+  --neo-pink:#FF006E;
+  --neo-cyan:#00D9FF;
+  --neo-purple:#8338EC;
+  --neo-green:#06FFA5;
+  --neo-blue:#0062FF;
+  --neo-red:#FF1744;
+  --bg-page:#FFFEF0;
+  --bg-card:#FFFFFF;
+  --text1:#000000;
+  --text2:#333333;
+  --text3:#666666;
+  --black:#000000;
+  --white:#FFFFFF;
+  --border-w:4px;
+  --shadow-brutal:6px 6px 0 var(--black);
+  --shadow-sm:4px 4px 0 var(--black);
+  --accent:var(--neo-cyan);
+  --green:var(--neo-green);
+  --amber:var(--neo-orange);
+  --red:var(--neo-red);
+  --blue:var(--neo-blue);
+  --metro-blue:var(--neo-cyan);
+  --metro-teal:var(--neo-cyan);
+  --metro-green:var(--neo-green);
+  --metro-orange:var(--neo-orange);
+  --metro-red:var(--neo-red);
+  --metro-purple:var(--neo-purple);
+  --metro-magenta:var(--neo-pink);
+  --metro-yellow:var(--neo-yellow);
+  --metro-dark:#000;
+  --metro-gray:#666;
+  --metro-light:#F5F5F5;
+  --metro-line:#000;
+}
+body{
+  background:#FF006E;
+  display:flex;justify-content:center;align-items:flex-start;
+  min-height:100vh;padding:24px 0 40px;
+  font-family:'Space Grotesk','Noto Sans KR',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+/* PHONE */
+.phone{
+  width:393px;height:860px;
+  background:var(--bg-page);
+  border-radius:0;overflow:hidden;
+  position:relative;display:flex;flex-direction:column;
+  border:var(--border-w) solid var(--black);
+  box-shadow:12px 12px 0 var(--black);
+}
+.notch{display:none;}
+/* HEADER — Brutalist */
+.header{
+  background:var(--neo-cyan);
+  padding:44px 0 0;flex-shrink:0;
+  position:relative;
+  border-bottom:var(--border-w) solid var(--black);
+}
+.header-deco,.glass-orb{display:none;}
+.h-top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:0 16px 12px;
+  border-bottom:3px solid var(--black);
+}
+.h-brand{font-size:10px;font-weight:900;letter-spacing:2px;color:var(--black);text-transform:uppercase;}
+.h-hotel{font-family:'Space Grotesk','Noto Sans KR',sans-serif;font-size:32px;font-weight:900;color:var(--black);letter-spacing:-1px;line-height:1.1;margin-top:4px;}
+.h-date{font-size:12px;color:var(--black);font-weight:700;margin-top:4px;}
+.h-icons{display:flex;gap:8px;}
+.h-btn{
+  width:48px;height:48px;border-radius:0;
+  background:var(--neo-yellow);border:3px solid var(--black);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;position:relative;
+  transition:all .1s;color:var(--black);
+  box-shadow:4px 4px 0 var(--black);
+}
+.h-btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black);}
+.h-btn:active{transform:translate(4px,4px);box-shadow:none;}
+.h-dot{position:absolute;top:8px;right:8px;width:10px;height:10px;background:var(--neo-red);border-radius:50%;border:2px solid var(--black);}
+.h-revenue{
+  margin:0;
+  background:var(--neo-pink);
+  border:none;border-radius:0;padding:20px 16px 22px;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  border-top:3px solid var(--black);
+}
+.rev-l p{font-size:12px;color:var(--black);font-weight:900;text-transform:uppercase;letter-spacing:1px;}
+.rev-l h1{margin-top:4px;font-family:'Space Grotesk','Noto Sans KR',sans-serif;font-size:52px;font-weight:900;color:var(--black);letter-spacing:-3px;line-height:1;}
+.rev-l h1 span{font-size:18px;font-weight:900;color:var(--black);}
+.rev-r{display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+.rev-badge{display:inline-flex;align-items:center;gap:6px;background:var(--neo-yellow);border:3px solid var(--black);border-radius:0;padding:6px 12px;font-size:12px;font-weight:900;color:var(--black);}
+.occ-row{text-align:right;}
+.occ-txt{font-size:11px;color:var(--black);font-weight:700;}
+.occ-track{width:80px;height:12px;background:var(--white);border:3px solid var(--black);border-radius:0;overflow:hidden;margin-top:6px;}
+.occ-fill{height:100%;border-radius:0;background:var(--black);width:72%;}
+/* SCROLL */
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:70px;background:var(--bg-page);}
+.scroll-area::-webkit-scrollbar{display:none;}
+.content{padding:0;}
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;}
+/* CARDS — Brutalist */
+.card{background:var(--bg-card);border-radius:0;padding:20px;margin-bottom:0;box-shadow:var(--shadow-sm);border:var(--border-w) solid var(--black);}
+.card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.card-title{font-family:'Space Grotesk','Noto Sans KR',sans-serif;font-size:24px;font-weight:900;color:var(--text1);letter-spacing:-0.5px;}
+.card-link{font-size:14px;font-weight:900;color:var(--neo-blue);cursor:pointer;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:3px;}
+.card-link:hover{text-decoration-thickness:4px;}
+.card-link:active{color:var(--neo-purple);}
+/* SECTION LABEL — Brutalist */
+.sec{font-size:13px;font-weight:900;letter-spacing:1.5px;color:var(--text1);text-transform:uppercase;margin:0;padding:16px;background:var(--neo-yellow);border-bottom:var(--border-w) solid var(--black);}
+/* STAT GRID — Brutalist Tiles */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;background:var(--bg-page);}
+.stat-card{
+  border-radius:0;padding:20px;
+  box-shadow:none;border:var(--border-w) solid var(--black);border-top:none;
+  min-height:130px;display:flex;flex-direction:column;justify-content:flex-end;
+  cursor:pointer;transition:all .1s;
+  color:var(--black);position:relative;
+}
+.stat-card:nth-child(odd){border-right:none;}
+.stat-card:nth-child(3),.stat-card:nth-child(4){border-top:var(--border-w) solid var(--black);}
+.stat-card:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--black);}
+.stat-card:active{transform:none;box-shadow:inset 3px 3px 0 rgba(0,0,0,0.2);}
+.stat-card.tile-blue{background:var(--neo-cyan);}
+.stat-card.tile-teal{background:var(--neo-purple);}
+.stat-card.tile-orange{background:var(--neo-orange);}
+.stat-card.tile-red{background:var(--neo-pink);}
+.stat-ico{font-size:32px;margin-bottom:auto;opacity:1;}
+.stat-lbl{font-size:11px;font-weight:900;opacity:1;text-transform:uppercase;letter-spacing:1px;}
+.stat-val{font-family:'Space Grotesk','Noto Sans KR',sans-serif;font-size:56px;font-weight:900;margin-top:4px;letter-spacing:-3px;line-height:1;}
+.stat-sub{font-size:11px;opacity:1;margin-top:6px;font-weight:700;}
+.stat-card.tile-red .stat-val{color:var(--black);}
+/* RES ITEMS */
+.res-item{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:3px solid var(--black);}
+.res-item:first-child{padding-top:16px;}
+.res-item:last-child{border-bottom:none;}
+.res-av{width:48px;height:48px;border-radius:0;background:var(--neo-green);border:3px solid var(--black);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.res-info{flex:1;min-width:0;}
+.res-name{font-size:16px;font-weight:900;color:var(--text1);}
+.res-desc{font-size:12px;color:var(--text2);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;}
+.badge{flex-shrink:0;padding:6px 12px;border-radius:0;font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;border:3px solid var(--black);box-shadow:3px 3px 0 var(--black);}
+.b-green{background:var(--neo-green);color:var(--black);}
+.b-amber{background:var(--neo-orange);color:var(--black);}
+.b-red{background:var(--neo-red);color:var(--black);}
+.b-blue{background:var(--neo-cyan);color:var(--black);}
+.b-gray{background:#CCC;color:var(--black);}
+/* ROOM GRID — Brutalist tiles */
+.room-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding:0;border:var(--border-w) solid var(--black);background:var(--black);}
+.room-cell{aspect-ratio:1;border-radius:0;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .1s;border:2px solid var(--black);position:relative;}
+.room-cell:hover{transform:scale(1.05);z-index:10;box-shadow:0 0 0 3px var(--neo-yellow);}
+.room-cell:active{transform:scale(0.95);}
+.r-st{font-size:8px;font-weight:900;letter-spacing:1px;text-transform:uppercase;}
+.r-num{font-size:14px;font-weight:900;margin-top:3px;}
+.rm-oc{background:var(--neo-cyan);color:var(--black);}
+.rm-va{background:var(--neo-green);color:var(--black);}
+.rm-cl{background:var(--neo-orange);color:var(--black);}
+.rm-wt{background:var(--neo-pink);color:var(--black);}
+.rm-key-yes{background:var(--neo-green);color:var(--black);}
+.rm-key-no{background:var(--neo-orange);color:var(--black);}
+.rm-key-na{background:#DDD;color:#666;}
+.room-cell.rm-key-na{cursor:default;}
+.room-cell.rm-key-na:hover{transform:none;box-shadow:none;}
+.room-cell.rm-key-na:active{transform:none;}
+.room-cell.rm-key-yes{cursor:default;}
+.room-cell.rm-key-yes:hover{transform:none;box-shadow:none;}
+.room-cell.rm-key-yes:active{transform:none;}
+.room-legend{display:flex;gap:14px;flex-wrap:wrap;margin:0;padding:12px 0;border-top:3px solid var(--black);}
+.leg{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text1);font-weight:900;}
+.leg-dot{width:14px;height:14px;border-radius:0;border:3px solid var(--black);}
+/* QUICK ACTIONS — Brutalist tiles */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;background:var(--bg-page);}
+.qa-item{
+  background:var(--neo-purple);border-radius:0;padding:20px;
+  box-shadow:none;border:var(--border-w) solid var(--black);border-top:none;
+  cursor:pointer;transition:all .1s;
+  display:flex;flex-direction:column;gap:8px;min-height:110px;color:var(--black);
+}
+.qa-item:nth-child(odd){border-right:none;}
+.qa-item:nth-child(2){background:var(--neo-yellow);}
+.qa-item:nth-child(3){background:var(--neo-pink);border-top:var(--border-w) solid var(--black);}
+.qa-item:nth-child(4){background:var(--neo-green);border-top:var(--border-w) solid var(--black);}
+.qa-item:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--black);}
+.qa-item:active{transform:none;box-shadow:inset 3px 3px 0 rgba(0,0,0,0.2);}
+.qa-ico{width:auto;height:auto;border-radius:0;display:flex;align-items:center;justify-content:flex-start;font-size:32px;background:transparent!important;}
+.qa-title{font-size:16px;font-weight:900;color:var(--black);}
+.qa-sub{font-size:12px;color:var(--black);font-weight:700;}
+/* MONITOR */
+.cam-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--metro-light);}
+.cam-wrap{position:relative;border-radius:0;overflow:hidden;aspect-ratio:4/3;background:var(--metro-dark);}
+.cam-wrap img{width:100%;height:100%;object-fit:cover;}
+.cam-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 50%,rgba(0,0,0,0.7));}
+.cam-live{position:absolute;top:0;left:0;display:flex;align-items:center;gap:4px;background:var(--metro-red);border-radius:0;padding:4px 8px;font-size:9px;font-weight:600;color:#fff;letter-spacing:.5px;}
+.live-dot{width:6px;height:6px;background:#fff;border-radius:0;animation:blink 1.1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.cam-name{position:absolute;bottom:8px;left:10px;font-size:11px;font-weight:400;color:#fff;}
+.event-item{background:var(--metro-light);border-radius:0;padding:14px 16px;margin-bottom:0;border:none;border-bottom:1px solid var(--metro-line);}
+.event-item:last-child{border-bottom:none;}
+.ev-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.ev-tag{font-size:9px;font-weight:600;padding:3px 8px;border-radius:0;letter-spacing:.5px;text-transform:uppercase;}
+.tag-ai{background:var(--metro-red);color:#fff;}
+.tag-sensor{background:var(--metro-green);color:#fff;}
+.tag-env{background:var(--metro-teal);color:#fff;}
+.ev-time{font-size:10px;color:var(--text3);font-weight:400;}
+.ev-title{font-size:14px;font-weight:400;color:var(--text1);}
+.ev-desc{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5;font-weight:300;}
+.ev-btns{display:flex;gap:4px;margin-top:12px;}
+.ev-btn{flex:1;height:40px;border-radius:0;border:none;font-size:12px;font-weight:400;cursor:pointer;font-family:inherit;transition:opacity .1s;}
+.ev-btn:active{opacity:.7;}
+.ev-pri{background:var(--metro-blue);color:#fff;}
+.ev-sec{background:var(--metro-light);color:var(--text1);border:1px solid var(--metro-line);}
+.sensor-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--metro-line);}
+.sensor-row:last-child{border-bottom:none;}
+.sn-name{font-size:14px;font-weight:400;color:var(--text1);}
+.sn-desc{font-size:11px;color:var(--text2);margin-top:2px;font-weight:300;}
+/* TABS — Brutalist */
+.tab-bar{display:flex;background:#fff;border-radius:0;padding:0;border:var(--border-w) solid var(--black);border-bottom:none;margin:16px;margin-bottom:0;}
+.tab-item{flex:1;height:56px;border-radius:0;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:var(--text2);cursor:pointer;transition:all .15s;border-bottom:4px solid transparent;margin-bottom:0;border-right:3px solid var(--black);text-transform:uppercase;}
+.tab-item:last-child{border-right:none;}
+.tab-item.active{background:var(--neo-yellow);color:var(--black);border-bottom-color:var(--black);font-weight:900;box-shadow:none;}
+.tab-item:hover:not(.active){background:#F9F9F9;}
+/* SALES */
+.sales-total{
+  background:var(--metro-purple);border-radius:0;padding:20px 16px;margin-bottom:0;
+  display:flex;justify-content:space-between;align-items:flex-end;box-shadow:none;
+}
+.sales-total::before{display:none;}
+.st-l p{font-size:11px;color:rgba(255,255,255,.75);font-weight:400;text-transform:uppercase;}
+.st-l h2{font-family:'Segoe UI','Noto Sans KR',sans-serif;font-size:48px;font-weight:200;color:#fff;letter-spacing:-2px;margin-top:4px;}
+.st-l h2 span{font-size:16px;font-weight:300;color:rgba(255,255,255,.75);}
+.st-r{text-align:right;}
+.st-chg{font-size:12px;font-weight:400;color:#fff;margin-bottom:4px;}
+.st-det{font-size:10px;color:rgba(255,255,255,.60);}
+.bars-wrap{display:flex;align-items:flex-end;gap:4px;height:90px;padding:0 16px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;}
+.bar-el{width:100%;border-radius:0;min-height:5px;}
+.bar-today{background:var(--metro-blue);}
+.bar-past{background:var(--metro-line);}
+.bar-lbl-row{display:flex;gap:4px;margin-top:5px;padding:0 16px 12px;}
+.bar-lbl{flex:1;font-size:9px;font-weight:400;color:var(--text3);text-align:center;}
+.sli{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--metro-line);}
+.sli:last-child{border-bottom:none;}
+.sli-dt{width:38px;flex-shrink:0;}
+.sli-dn{font-size:12px;font-weight:400;color:var(--text1);}
+.sli-dl{font-size:9px;color:var(--text3);font-weight:400;margin-top:1px;}
+.sli-bar{flex:1;}
+.sli-track{height:4px;background:var(--metro-line);border-radius:0;overflow:hidden;}
+.sli-fill{height:100%;border-radius:0;background:var(--metro-blue);}
+.sli-sub{font-size:10px;color:var(--text2);margin-top:4px;font-weight:300;}
+.sli-price{font-size:14px;font-weight:300;color:var(--text1);white-space:nowrap;}
+/* CALENDAR */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 16px;}
+.cal-month{font-family:'Segoe UI','Noto Sans KR',sans-serif;font-size:24px;font-weight:300;color:var(--text1);}
+.cal-nb{width:44px;height:44px;border-radius:0;background:var(--metro-light);border:none;font-size:14px;color:var(--text1);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.cal-nb:active{background:var(--metro-line);}
+.cal-hdr{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:10px;font-weight:400;color:var(--text3);margin-bottom:4px;padding:0 16px;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;padding:0 16px 12px;}
+.cd{aspect-ratio:1;border-radius:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;font-weight:400;color:var(--text2);cursor:pointer;position:relative;transition:background .1s;}
+.cd:active{background:var(--metro-line);}
+.cd.other{color:var(--text3);}
+.cd.has-r{color:var(--text1);font-weight:600;}
+.cd.today{background:var(--metro-blue);color:#fff;box-shadow:none;}
+.cd.selected{background:var(--accent-dk);color:#fff;box-shadow:none;}
+.cd.today:not(.selected){background:var(--accent-lt);color:var(--metro-blue);box-shadow:none;}
+.cd-dot{position:absolute;bottom:4px;width:4px;height:4px;border-radius:0;background:var(--metro-teal);}
+.cd.selected .cd-dot,.cd.today .cd-dot{background:#fff;}
+.res-sum{display:flex;gap:4px;margin:0;padding:4px;background:var(--metro-light);}
+.rs-item{flex:1;background:var(--metro-blue);border-radius:0;padding:12px 8px;text-align:center;border:none;box-shadow:none;color:#fff;}
+.rs-item:nth-child(2){background:var(--metro-teal);}
+.rs-item:nth-child(3){background:var(--metro-orange);}
+.rs-lbl{font-size:10px;opacity:.8;font-weight:400;}
+.rs-val{font-family:'Segoe UI','Noto Sans KR',sans-serif;font-size:28px;font-weight:200;margin-top:4px;}
+/* NOTIFY */
+.notif-item{display:flex;align-items:flex-start;gap:14px;padding:16px;border-bottom:3px solid var(--black);}
+.notif-item:first-child{padding-top:16px;}
+.notif-item:last-child{border-bottom:none;}
+.ni-ico{width:52px;height:52px;border-radius:0;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;border:3px solid var(--black);box-shadow:3px 3px 0 var(--black);}
+.ni-red{background:var(--neo-red);color:var(--black);}
+.ni-amber{background:var(--neo-orange);color:var(--black);}
+.ni-blue{background:var(--neo-cyan);color:var(--black);}
+.ni-green{background:var(--neo-green);color:var(--black);}
+.ni-gray{background:#CCC;color:var(--black);}
+.ni-body{flex:1;}
+.ni-title{font-size:16px;font-weight:900;color:var(--text1);}
+.ni-sub{font-size:13px;color:var(--text2);margin-top:5px;line-height:1.6;font-weight:700;}
+.ni-meta{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.ni-time{font-size:11px;color:var(--text3);font-weight:900;text-transform:uppercase;}
+.ni-src{font-size:11px;font-weight:900;padding:4px 10px;border-radius:0;background:var(--neo-yellow);color:var(--black);border:2px solid var(--black);}
+.ni-dot{width:12px;height:12px;border-radius:50%;background:var(--neo-red);flex-shrink:0;margin-top:8px;border:3px solid var(--black);}
+.ni-actions{display:flex;gap:8px;margin-top:12px;}
+.ni-btn{height:44px;padding:0 18px;border-radius:0;border:3px solid var(--black);font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;transition:all .1s;text-transform:uppercase;}
+.ni-btn:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--black);}
+.ni-btn:active{transform:translate(2px,2px);box-shadow:none;}
+.ni-btn-pri{background:var(--neo-cyan);color:var(--black);}
+.ni-btn-sec{background:var(--white);color:var(--black);}
+.notify-empty{text-align:center;padding:36px 16px;font-size:16px;font-weight:900;color:var(--text2);}
+.done-lbl{font-size:12px;font-weight:900;color:var(--black);margin:0;padding:16px;background:var(--neo-green);border-bottom:var(--border-w) solid var(--black);text-transform:uppercase;letter-spacing:1px;}
+/* CONVENIENCE */
+.conv-grid{display:grid;grid-template-columns:1fr;gap:0;}
+.conv-card{background:var(--bg-card);border-radius:0;padding:16px;box-shadow:none;border:none;border-bottom:1px solid var(--metro-line);cursor:pointer;transition:background .1s;display:flex;gap:13px;align-items:flex-start;}
+.conv-card:active{background:var(--metro-light);}
+.conv-ico{width:44px;height:44px;border-radius:0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.conv-info{flex:1;min-width:0;}
+.conv-title{font-size:14px;font-weight:400;color:var(--text1);}
+.conv-desc{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.45;font-weight:300;}
+.conv-arrow{font-size:18px;color:var(--metro-blue);margin-top:8px;}
+.chip-grid{display:flex;gap:4px;flex-wrap:wrap;padding:12px 16px;}
+.chip{border:none;border-radius:0;background:var(--metro-blue);color:#fff;font-size:11px;font-weight:400;padding:8px 12px;font-family:inherit;cursor:pointer;transition:opacity .1s;}
+.chip:active{opacity:.8;}
+.detail-list{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--metro-light);}
+.detail-btn{min-height:48px;border:none;background:#fff;border-radius:0;padding:12px;font-size:12px;font-weight:400;color:var(--text1);font-family:inherit;cursor:pointer;text-align:left;border-left:4px solid var(--metro-blue);}
+.detail-btn:active{background:var(--metro-light);}
+.form-grid{display:grid;gap:16px;padding:0 16px 16px;}
+.field label{display:block;font-size:13px;font-weight:900;color:var(--text1);margin:0 0 8px 0;text-transform:uppercase;letter-spacing:0.5px;}
+.input,.select,.textarea{width:100%;border:3px solid var(--black);border-radius:0;background:var(--white);padding:14px;font-family:inherit;font-size:16px;font-weight:700;color:var(--text1);outline:none;transition:all .1s;}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--neo-cyan);box-shadow:4px 4px 0 var(--black);transform:translate(-2px,-2px);}
+.textarea{min-height:90px;resize:none;line-height:1.6;}
+.input-row{display:grid;grid-template-columns:1fr 86px 86px;gap:10px;}
+.photo-box{border:3px dashed var(--black);background:var(--neo-yellow);border-radius:0;padding:28px;text-align:center;font-size:14px;font-weight:900;color:var(--black);cursor:pointer;}
+.photo-box:hover{background:var(--neo-cyan);}
+.submit-btn,.add-item-btn{width:100%;height:56px;border:var(--border-w) solid var(--black);border-radius:0;font-family:inherit;font-size:16px;font-weight:900;cursor:pointer;transition:all .1s;text-transform:uppercase;letter-spacing:1px;}
+.submit-btn{background:var(--neo-cyan);color:var(--black);box-shadow:var(--shadow-sm);}
+.submit-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--black);}
+.submit-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black);}
+.add-item-btn{background:var(--neo-yellow);color:var(--black);box-shadow:var(--shadow-sm);}
+.add-item-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--black);}
+.add-item-btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black);}
+.complete-msg{display:none;margin:0;background:var(--neo-green);border:var(--border-w) solid var(--black);color:var(--black);border-radius:0;padding:18px;font-size:16px;font-weight:900;text-align:center;box-shadow:var(--shadow-sm);}
+.complete-msg.show{display:block;}
+.hist-item{padding:14px 16px;border-bottom:1px solid var(--metro-line);cursor:pointer;}
+.hist-item:first-child{padding-top:14px;}
+.hist-item:last-child{border-bottom:none;}
+.hist-item:active{background:var(--metro-light);}
+.hist-top{display:flex;justify-content:space-between;gap:8px;align-items:center;}
+.hist-title{font-size:13px;font-weight:400;color:var(--text1);}
+.hist-meta{font-size:10px;color:var(--text2);margin-top:5px;line-height:1.45;font-weight:300;}
+.back-link{font-size:12px;font-weight:400;color:var(--metro-blue);cursor:pointer;padding:14px 16px;display:inline-block;}
+.detail-summary{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:0;padding:4px;background:var(--metro-light);}
+.detail-mini{background:#fff;border:none;border-radius:0;padding:12px;border-left:4px solid var(--metro-blue);}
+.dm-lbl{font-size:10px;font-weight:400;color:var(--text3);margin-bottom:4px;text-transform:uppercase;}
+.dm-val{font-size:13px;font-weight:400;color:var(--text1);line-height:1.35;}
+.process-note{background:var(--metro-light);border:none;border-left:4px solid var(--metro-teal);border-radius:0;padding:14px 16px;font-size:12px;line-height:1.55;color:var(--text2);font-weight:300;}
+.evidence-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--metro-light);}
+.evidence-card{background:var(--bg-card);border:none;border-radius:0;overflow:hidden;}
+.evidence-card img{width:100%;height:94px;object-fit:cover;display:block;background:var(--metro-light);}
+.evidence-cap{padding:8px 10px;font-size:10px;font-weight:400;color:var(--text2);}
+/* BOTTOM NAV — Brutalist */
+.bottom-nav{
+  position:absolute;bottom:0;left:0;right:0;height:70px;
+  background:var(--black);
+  border-top:var(--border-w) solid var(--black);
+  display:flex;justify-content:space-around;align-items:stretch;
+  padding-bottom:0;box-shadow:none;z-index:100;
+}
+.nav-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding:0 8px;border-radius:0;transition:all .1s;min-width:0;flex:1;position:relative;border-top:0 solid var(--neo-cyan);background:var(--black);}
+.nav-btn:hover{background:#222;}
+.nav-btn:active{background:#111;}
+.nav-btn.on{background:var(--neo-yellow);border-top:4px solid var(--black);}
+.nav-ico{font-size:24px;opacity:1;transition:all .15s;filter:none;}
+.nav-btn.on .nav-ico{opacity:1;filter:none;transform:scale(1.1);}
+.nav-txt{font-size:10px;font-weight:900;color:var(--white);transition:color .15s;text-transform:uppercase;letter-spacing:0.5px;}
+.nav-btn.on .nav-txt{color:var(--black);font-weight:900;}
+.nav-badge{position:absolute;top:8px;right:calc(50% - 22px);min-width:20px;height:20px;background:var(--neo-red);border-radius:50%;font-size:10px;font-weight:900;color:var(--black);display:flex;align-items:center;justify-content:center;padding:0 4px;border:3px solid var(--black);}
+/* SETTINGS */
+.settings-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:250;display:none;align-items:flex-end;justify-content:center;}
+.settings-overlay.show{display:flex;}
+.settings-sheet{
+  background:#fff;border-radius:0;width:100%;max-height:78%;overflow-y:auto;padding:0 0 28px;
+  animation:slideUp .2s var(--ease);box-shadow:none;border-top:4px solid var(--metro-blue);
+}
+.settings-handle{display:none;}
+.settings-title{font-family:'Segoe UI','Noto Sans KR',sans-serif;font-size:28px;font-weight:300;color:var(--text1);margin:0;padding:20px 16px 14px;border-bottom:1px solid var(--metro-line);}
+.settings-item{display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--metro-line);cursor:pointer;transition:background .1s;}
+.settings-item:last-child{border-bottom:none;}
+.settings-item:active{background:var(--metro-light);}
+.settings-ico{width:44px;height:44px;border-radius:0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.settings-info{flex:1;min-width:0;}
+.settings-name{font-size:14px;font-weight:400;color:var(--text1);}
+.settings-desc{font-size:11px;color:var(--text2);margin-top:3px;font-weight:300;}
+.settings-arrow{font-size:18px;color:var(--metro-blue);}
+.settings-item.danger .settings-name{color:var(--metro-red);}
+.settings-item.danger .settings-ico{background:var(--metro-red);color:#fff;}
+.settings-back{font-size:12px;font-weight:400;color:var(--metro-blue);cursor:pointer;padding:14px 16px;display:inline-block;}
+.settings-back:active{opacity:.7;}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--metro-line);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-lbl{font-size:14px;font-weight:400;color:var(--text1);}
+.toggle-sub{font-size:11px;color:var(--text2);margin-top:3px;font-weight:300;}
+.toggle{position:relative;width:50px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-track{position:absolute;inset:0;background:var(--metro-line);border-radius:0;cursor:pointer;transition:background .15s;}
+.toggle-track::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:0;transition:transform .15s;box-shadow:none;}
+.toggle input:checked+.toggle-track{background:var(--metro-blue);}
+.toggle input:checked+.toggle-track::after{transform:translateX(26px);}
+/* SCHEDULE */
+.sched-item{display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid var(--metro-line);align-items:flex-start;}
+.sched-item:first-child{padding-top:14px;}
+.sched-item:last-child{border-bottom:none;}
+.sched-time{width:48px;flex-shrink:0;font-size:12px;font-weight:600;color:var(--metro-blue);line-height:1.3;padding-top:2px;}
+.sched-body{flex:1;min-width:0;}
+.sched-top{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.sched-title{font-size:14px;font-weight:400;color:var(--text1);}
+.sched-sub{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.45;font-weight:300;}
+.sched-item.done{opacity:.5;}
+.sched-item.done .sched-title{text-decoration:line-through;color:var(--text2);}
+.sched-check{width:32px;height:32px;border-radius:0;border:2px solid var(--metro-line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;flex-shrink:0;transition:all .1s;}
+.sched-check.on{background:var(--metro-green);border-color:var(--metro-green);color:#fff;}
+.sched-check:active{opacity:.7;}
+.card-head+.room-grid,.card-head~.room-legend{margin-top:0;}
+.card .card-head{padding:0 0 12px;}
+.card .card-head+.room-grid{padding-top:0;}
+#pg-sales .content,#pg-reserve .content{padding-top:0;}
+#pg-sales .tab-bar,#pg-reserve .tab-bar{margin:0;}
+#pg-monitor .content{padding-top:0;}
+#pg-monitor .sec:first-child{margin-top:0;}
+#pg-monitor button.submit-btn{margin:4px 4px 0;border-radius:0;}
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="h-top">
+      <div>
+        <div class="h-brand">Smart Stay Owner</div>
+        <div class="h-hotel">H STAY 강남점</div>
+        <div class="h-date">2026년 5월 12일 화요일</div>
+      </div>
+      <div class="h-icons">
+        <div class="h-btn" onclick="navTo('notify')">🔔<div class="h-dot" id="header-notify-dot"></div></div>
+        <div class="h-btn" onclick="openSettings()">⚙️</div>
+      </div>
+    </div>
+    <div class="h-revenue">
+      <div class="rev-l">
+        <p>이번달 총 매출</p>
+        <h1>4,820<span>만원</span></h1>
+      </div>
+      <div class="rev-r">
+        <div class="rev-badge">▲ 12.4%</div>
+        <div class="occ-row">
+          <div class="occ-txt">가동률 72%</div>
+          <div class="occ-track"><div class="occ-fill"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-area" id="main-scroll">
+
+    <!-- ========== HOME ========== -->
+    <div class="page active" id="pg-home">
+      <div class="content">
+        <div class="sec">오늘 현황</div>
+        <div class="stat-grid">
+          <div class="stat-card tile-blue"><div class="stat-ico">🏨</div><div class="stat-lbl">현재 투숙</div><div class="stat-val">18</div><div class="stat-sub">전체 25실 중</div></div>
+          <div class="stat-card tile-teal"><div class="stat-ico">✈️</div><div class="stat-lbl">오늘 체크인</div><div class="stat-val">12</div><div class="stat-sub">예정 인원</div></div>
+          <div class="stat-card tile-orange"><div class="stat-ico">⏱️</div><div class="stat-lbl">대실 예약</div><div class="stat-val">7</div><div class="stat-sub">오늘 기준</div></div>
+          <div class="stat-card tile-red"><div class="stat-ico">🔔</div><div class="stat-lbl">미처리 알림</div><div class="stat-val" id="home-notify-count">3</div><div class="stat-sub">즉시 확인 필요</div></div>
+        </div>
+
+        <div class="sec">객실 현황</div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">객실 현황</div>
+            <div class="card-link" onclick="navTo('monitor')">관제실 →</div>
+          </div>
+          <div class="room-grid" id="room-grid"></div>
+          <div class="room-legend">
+            <div class="leg"><div class="leg-dot" style="background:#0078D4;"></div>투숙중</div>
+            <div class="leg"><div class="leg-dot" style="background:#107C10;"></div>공실</div>
+            <div class="leg"><div class="leg-dot" style="background:#FF8C00;"></div>청소대기</div>
+            <div class="leg"><div class="leg-dot" style="background:#E81123;"></div>청소중</div>
+          </div>
+        </div>
+
+        <div class="sec">오늘 체크인 예정</div>
+        <div class="card" id="checkin-list">
+          <div class="res-item"><div class="res-av">🏨</div><div class="res-info"><div class="res-name">김○○ 고객</div><div class="res-desc">오후 5:00 · 디럭스룸 301호 · 1박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">🛎</div><div class="res-info"><div class="res-name">박○○ 고객</div><div class="res-desc">오후 7:00 · 스탠다드룸 205호 · 3시간</div></div><div class="badge b-amber">대실</div></div>
+          <div class="res-item"><div class="res-av">🧳</div><div class="res-info"><div class="res-name">이○○ 고객</div><div class="res-desc">오후 8:30 · 스위트룸 401호 · 2박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">👤</div><div class="res-info"><div class="res-name">최○○ 고객</div><div class="res-desc">오전 11:00 체크아웃 · 스탠다드 202호</div></div><div class="badge b-red">퇴실</div></div>
+        </div>
+
+        <div class="sec">오늘 일정</div>
+        <div class="card" id="home-schedule-preview"></div>
+
+        <div class="sec">빠른 액션</div>
+        <div class="qa-grid">
+          <div class="qa-item" onclick="showKeyIssueDetail()"><div class="qa-ico">🔑</div><div><div class="qa-title">키 발급</div><div class="qa-sub" id="key-pending-count">3실 미발급</div></div></div>
+          <div class="qa-item" onclick="showCheckoutDetail()"><div class="qa-ico">🚪</div><div><div class="qa-title">체크아웃 처리</div><div class="qa-sub">5실 예정</div></div></div>
+          <div class="qa-item" onclick="showSmsDetail()"><div class="qa-ico">📞</div><div><div class="qa-title">고객 문자 발송</div><div class="qa-sub">일괄 발송 가능</div></div></div>
+          <div class="qa-item" onclick="showScheduleDetail()"><div class="qa-ico">📅</div><div><div class="qa-title">스케줄 관리</div><div class="qa-sub" id="schedule-pending-count">4건 예정</div></div></div>
+          <div class="qa-item" onclick="showDailyReportDetail()" style="display:none;"><div class="qa-ico">📊</div><div><div class="qa-title">일일 리포트</div><div class="qa-sub">자동 생성</div></div></div>
+        </div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== MONITOR ========== -->
+    <div class="page" id="pg-monitor">
+      <div class="content">
+        <div class="sec">LIVE 카메라</div>
+        <div class="card">
+          <div class="cam-grid">
+            <div class="cam-wrap"><img src="https://images.unsplash.com/photo-1534430480872-3498386e7856?w=400&auto=format&fit=crop"><div class="cam-ov"></div><div class="cam-live"><div class="live-dot"></div>LIVE</div><div class="cam-name">1F 로비</div></div>
+            <div class="cam-wrap"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&auto=format&fit=crop"><div class="cam-ov"></div><div class="cam-live"><div class="live-dot"></div>LIVE</div><div class="cam-name">B1 주차장</div></div>
+            <div class="cam-wrap"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&auto=format&fit=crop"><div class="cam-ov"></div><div class="cam-live"><div class="live-dot"></div>LIVE</div><div class="cam-name">2F 복도</div></div>
+            <div class="cam-wrap"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&auto=format&fit=crop"><div class="cam-ov"></div><div class="cam-live"><div class="live-dot"></div>LIVE</div><div class="cam-name">비상구</div></div>
+          </div>
+        </div>
+
+        <button class="submit-btn" type="button" onclick="alert('원격지원을 연결합니다.')" style="margin-bottom:12px;">🖥️ 원격지원</button>
+
+        <div class="sec">이벤트 알림</div>
+        <div class="card" style="padding:16px;">
+          <div class="event-item">
+            <div class="ev-top"><div class="ev-tag tag-ai">🤖 AI 카메라</div><div class="ev-time">2분 전</div></div>
+            <div class="ev-title">복도 장시간 배회 감지</div>
+            <div class="ev-desc">2F 복도 · 동일 위치 12분 체류 행동 감지됨</div>
+            <div class="ev-btns"><button class="ev-btn ev-pri">영상 확인</button><button class="ev-btn ev-sec">무시하기</button></div>
+          </div>
+          <div class="event-item">
+            <div class="ev-top"><div class="ev-tag tag-sensor">📡 센서 감지</div><div class="ev-time">5분 전</div></div>
+            <div class="ev-title">객실 움직임 지속 감지</div>
+            <div class="ev-desc">305호 · 심야 비정상 움직임 패턴 감지</div>
+            <div class="ev-btns"><button class="ev-btn ev-pri">상세 보기</button><button class="ev-btn ev-sec">무시하기</button></div>
+          </div>
+          <div class="event-item">
+            <div class="ev-top"><div class="ev-tag tag-env">🌡 환경 센서</div><div class="ev-time">18분 전</div></div>
+            <div class="ev-title">203호 실내 온도 이상</div>
+            <div class="ev-desc">설정 22°C 대비 실내 29°C — 에어컨 미작동 추정</div>
+            <div class="ev-btns"><button class="ev-btn ev-pri">원격 제어</button><button class="ev-btn ev-sec">무시하기</button></div>
+          </div>
+        </div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== SALES ========== -->
+    <div class="page" id="pg-sales">
+      <div class="content">
+        <div style="height:16px;"></div>
+        <div class="tab-bar" style="margin-bottom:16px;">
+          <div class="tab-item active" onclick="switchTab(this)">일별</div>
+          <div class="tab-item" onclick="switchTab(this)">월별</div>
+          <div class="tab-item" onclick="switchTab(this)">연간</div>
+        </div>
+
+        <div class="sales-total">
+          <div class="st-l"><p>오늘 매출</p><h2>128<span>만원</span></h2></div>
+          <div class="st-r"><div class="st-chg">▲ 전일 대비 +18%</div><div class="st-det">숙박 2건 + 대실 3건</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">최근 7일 매출 추이</div></div>
+          <div class="bars-wrap" id="bars-row"></div>
+          <div class="bar-lbl-row" id="bar-lbl-row"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">매출 유형 분석</div></div>
+          <div style="display:flex;gap:10px;margin-bottom:14px;">
+            <div class="stat-card" style="flex:1;text-align:center;padding:14px 10px;"><div class="stat-lbl">숙박</div><div class="stat-val" style="font-size:24px;">68%</div><div class="stat-sub">876만원</div></div>
+            <div class="stat-card" style="flex:1;text-align:center;padding:14px 10px;"><div class="stat-lbl">대실</div><div class="stat-val" style="font-size:24px;">32%</div><div class="stat-sub">412만원</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><div class="card-title">일별 매출 내역</div></div>
+          <div id="sales-list"></div>
+        </div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== RESERVE ========== -->
+    <div class="page" id="pg-reserve">
+      <div class="content">
+        <div class="sec">예약 캘린더</div>
+        <div class="card">
+          <div class="cal-nav">
+            <div class="cal-nb">◀</div>
+            <div class="cal-month">2026년 5월</div>
+            <div class="cal-nb">▶</div>
+          </div>
+          <div class="cal-hdr"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+
+        <div class="res-sum">
+          <div class="rs-item"><div class="rs-lbl">총 방문</div><div class="rs-val">18</div></div>
+          <div class="rs-item"><div class="rs-lbl">숙박</div><div class="rs-val">12</div></div>
+          <div class="rs-item"><div class="rs-lbl">대실</div><div class="rs-val">6</div></div>
+        </div>
+
+        <div class="tab-bar" style="margin-bottom:12px;">
+          <div class="tab-item active" onclick="switchTab(this)">전체</div>
+          <div class="tab-item" onclick="switchTab(this)">숙박</div>
+          <div class="tab-item" onclick="switchTab(this)">대실</div>
+        </div>
+
+        <div class="card">
+          <div class="res-item"><div class="res-av">🏨</div><div class="res-info"><div class="res-name">김○○ 고객</div><div class="res-desc">17:00 체크인 · 디럭스 301호 · 1박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">🛎</div><div class="res-info"><div class="res-name">박○○ 고객</div><div class="res-desc">19:00 체크인 · 스탠다드 205호 · 3시간</div></div><div class="badge b-amber">대실</div></div>
+          <div class="res-item"><div class="res-av">🧳</div><div class="res-info"><div class="res-name">이○○ 고객</div><div class="res-desc">20:30 체크인 · 스위트 401호 · 2박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">👤</div><div class="res-info"><div class="res-name">최○○ 고객</div><div class="res-desc">11:00 체크아웃 · 스탠다드 202호</div></div><div class="badge b-red">퇴실</div></div>
+          <div class="res-item"><div class="res-av">🛏</div><div class="res-info"><div class="res-name">정○○ 고객</div><div class="res-desc">14:00 체크인 · 디럭스 303호 · 2박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">👥</div><div class="res-info"><div class="res-name">홍○○ 고객</div><div class="res-desc">16:00 체크인 · 패밀리 408호 · 대실</div></div><div class="badge b-amber">대실</div></div>
+        </div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== NOTIFY ========== -->
+    <div class="page" id="pg-notify">
+      <div class="content">
+        <div class="complete-msg" id="notify-complete">알림이 처리되었습니다.</div>
+        <div class="sec" id="notify-pending-sec">미처리 알림</div>
+        <div class="card" style="padding:16px;" id="notify-pending"></div>
+        <div class="done-lbl">오늘 처리 완료</div>
+        <div class="card" style="padding:16px;opacity:.65;" id="notify-done"></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== CONVENIENCE ========== -->
+    <div class="page" id="pg-convenience">
+      <div class="content">
+        <div class="complete-msg" id="conv-complete">신청이 접수되었습니다.</div>
+        <div id="conv-view"></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== KEY ISSUE ========== -->
+    <div class="page" id="pg-key">
+      <div class="content">
+        <div class="complete-msg" id="key-complete">객실키가 발급되었습니다.</div>
+        <div id="key-view"></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== CHECKOUT DETAIL ========== -->
+    <div class="page" id="pg-checkout">
+      <div class="content">
+        <div class="complete-msg" id="checkout-complete">체크아웃이 완료되었습니다.</div>
+        <div id="checkout-view"></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== SMS DETAIL ========== -->
+    <div class="page" id="pg-sms">
+      <div class="content">
+        <div class="complete-msg" id="sms-complete">문자가 발송되었습니다.</div>
+        <div id="sms-view"></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== DAILY REPORT DETAIL ========== -->
+    <div class="page" id="pg-report">
+      <div class="content">
+        <div id="report-view"></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== SCHEDULE ========== -->
+    <div class="page" id="pg-schedule">
+      <div class="content">
+        <div class="complete-msg" id="schedule-complete">일정이 등록되었습니다.</div>
+        <div id="schedule-view"></div>
+        <div style="height:8px;"></div>
+      </div>
+    </div>
+
+  </div><!-- /scroll-area -->
+
+  <!-- SETTINGS -->
+  <div class="settings-overlay" id="settings-overlay" onclick="closeSettings(event)">
+    <div class="settings-sheet" id="settings-sheet" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-btn on" id="nav-home" onclick="navTo('home')">
+      <div class="nav-ico">🏠</div><div class="nav-txt">홈</div>
+    </div>
+    <div class="nav-btn" id="nav-monitor" onclick="navTo('monitor')">
+      <div class="nav-ico">📹</div><div class="nav-txt">관제</div>
+    </div>
+    <div class="nav-btn" id="nav-sales" onclick="navTo('sales')">
+      <div class="nav-ico">💰</div><div class="nav-txt">매출</div>
+    </div>
+    <div class="nav-btn" id="nav-reserve" onclick="navTo('reserve')">
+      <div class="nav-ico">🛎</div><div class="nav-txt">예약</div>
+    </div>
+    <div class="nav-btn" id="nav-convenience" onclick="navTo('convenience')">
+      <div class="nav-ico">🧰</div><div class="nav-txt">편의</div>
+    </div>
+    <div class="nav-btn" id="nav-notify" onclick="navTo('notify')">
+      <div class="nav-ico">🔔</div><div class="nav-txt">알림</div>
+      <div class="nav-badge" id="nav-notify-badge">3</div>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script>
+/* NAV */
+function navTo(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('on');
+  document.getElementById('main-scroll').scrollTop=0;
+  if(id==='convenience'&&!document.getElementById('conv-view').innerHTML.trim()) renderConvenienceHome();
+  if(id==='notify') document.getElementById('notify-complete').classList.remove('show');
+}
+/* SETTINGS */
+const pushSettings={
+  all:true,
+  checkin:true,
+  monitor:true,
+  operation:true,
+  marketing:false
+};
+function openSettings(){
+  renderSettingsMenu();
+  document.getElementById('settings-overlay').classList.add('show');
+}
+function closeSettings(e){
+  if(e&&e.target!==document.getElementById('settings-overlay')) return;
+  document.getElementById('settings-overlay').classList.remove('show');
+}
+function renderSettingsMenu(){
+  document.getElementById('settings-sheet').innerHTML=`
+    <div class="settings-handle"></div>
+    <div class="settings-title">설정</div>
+    <div class="settings-item" onclick="renderMemberInfo()">
+      <div class="settings-ico">👤</div>
+      <div class="settings-info"><div class="settings-name">회원정보</div><div class="settings-desc">이름, 연락처, 소속 업소</div></div>
+      <div class="settings-arrow">›</div>
+    </div>
+    <div class="settings-item" onclick="renderPushSettings()">
+      <div class="settings-ico">🔔</div>
+      <div class="settings-info"><div class="settings-name">Push 설정</div><div class="settings-desc">알림 수신 항목 관리</div></div>
+      <div class="settings-arrow">›</div>
+    </div>
+    <div class="settings-item" onclick="alert('앱 버전 1.0.0\\nSmart Stay Owner')">
+      <div class="settings-ico">ℹ️</div>
+      <div class="settings-info"><div class="settings-name">앱 정보</div><div class="settings-desc">버전 1.0.0</div></div>
+      <div class="settings-arrow">›</div>
+    </div>
+    <div class="settings-item danger" onclick="confirmLogout()">
+      <div class="settings-ico">🚪</div>
+      <div class="settings-info"><div class="settings-name">로그아웃</div><div class="settings-desc">계정에서 로그아웃합니다</div></div>
+      <div class="settings-arrow">›</div>
+    </div>
+  `;
+}
+function renderMemberInfo(){
+  document.getElementById('settings-sheet').innerHTML=`
+    <div class="settings-handle"></div>
+    <span class="settings-back" onclick="renderSettingsMenu()">← 설정</span>
+    <div class="settings-title">회원정보</div>
+    <div class="detail-summary" style="margin-bottom:14px;">
+      <div class="detail-mini"><div class="dm-lbl">이름</div><div class="dm-val">홍길동</div></div>
+      <div class="detail-mini"><div class="dm-lbl">직책</div><div class="dm-val">점장</div></div>
+      <div class="detail-mini"><div class="dm-lbl">연락처</div><div class="dm-val">010-1234-5678</div></div>
+      <div class="detail-mini"><div class="dm-lbl">이메일</div><div class="dm-val">owner@hstay.com</div></div>
+      <div class="detail-mini" style="grid-column:1/-1;"><div class="dm-lbl">소속 업소</div><div class="dm-val">H STAY 강남점</div></div>
+      <div class="detail-mini" style="grid-column:1/-1;"><div class="dm-lbl">회원 등급</div><div class="dm-val">Owner Premium</div></div>
+    </div>
+    <button class="submit-btn" type="button" onclick="alert('회원정보 수정 화면으로 이동합니다.')">정보 수정</button>
+  `;
+}
+function renderPushSettings(){
+  const rows=[
+    {key:'all',lbl:'전체 Push 알림',sub:'모든 알림 수신'},
+    {key:'checkin',lbl:'체크인 · 체크아웃',sub:'입퇴실 관련 알림'},
+    {key:'monitor',lbl:'관제 이벤트',sub:'AI 카메라, 센서 감지'},
+    {key:'operation',lbl:'운영 알림',sub:'청소, 정산, 편의 신청'},
+    {key:'marketing',lbl:'마케팅 · 프로모션',sub:'할인, 이벤트 안내'}
+  ];
+  document.getElementById('settings-sheet').innerHTML=`
+    <div class="settings-handle"></div>
+    <span class="settings-back" onclick="renderSettingsMenu()">← 설정</span>
+    <div class="settings-title">Push 설정</div>
+    <div class="card" style="padding:16px;margin-bottom:12px;box-shadow:none;">
+      ${rows.map(r=>`<div class="toggle-row">
+        <div><div class="toggle-lbl">${r.lbl}</div><div class="toggle-sub">${r.sub}</div></div>
+        <label class="toggle">
+          <input type="checkbox" ${pushSettings[r.key]?'checked':''} onchange="togglePush('${r.key}',this.checked)">
+          <span class="toggle-track"></span>
+        </label>
+      </div>`).join('')}
+    </div>
+    <div class="process-note">Push 알림은 기기 설정에서도 ON/OFF 할 수 있습니다.</div>
+  `;
+}
+function togglePush(key,on){
+  pushSettings[key]=on;
+  if(key==='all'&&!on){
+    Object.keys(pushSettings).forEach(k=>pushSettings[k]=false);
+    renderPushSettings();
+  }else if(key!=='all'&&on){
+    pushSettings.all=true;
+  }else if(key!=='all'){
+    pushSettings.all=Object.keys(pushSettings).some(k=>k!=='all'&&pushSettings[k]);
+    renderPushSettings();
+  }
+}
+function confirmLogout(){
+  if(confirm('로그아웃 하시겠습니까?')){
+    closeSettings();
+    alert('로그아웃 되었습니다.');
+  }
+}
+/* NOTIFY */
+let pendingNotifs=[
+  {id:1,ico:'🚨',tone:'ni-red',title:'복도 배회 감지 — 2F',sub:'AI 카메라가 동일 위치 장시간 체류를 감지했습니다. 영상을 확인하세요.',time:'2분 전',src:'관제 카메라'},
+  {id:2,ico:'🌡',tone:'ni-amber',title:'203호 온도 이상 (29°C)',sub:'설정 온도 22°C 대비 실내 온도가 높습니다. 에어컨 확인이 필요합니다.',time:'18분 전',src:'환경 센서'},
+  {id:3,ico:'🧹',tone:'ni-blue',title:'청소 요청 3실 대기중',sub:'102호, 207호, 315호가 청소 대기 상태입니다. 하우스키핑에 배정해주세요.',time:'34분 전',src:'운영'}
+];
+const doneNotifs=[
+  {ico:'✅',tone:'ni-green',title:'301호 체크인 완료',sub:'김○○ 고객 체크인 처리 완료 — 디럭스 301호',time:'1시간 전',src:'프런트'},
+  {ico:'✅',tone:'ni-green',title:'205호 청소 완료',sub:'객실 청소 및 정비 완료 보고 — 스탠다드 205호',time:'2시간 전',src:'하우스키핑'},
+  {ico:'📋',tone:'ni-gray',title:'일일 정산 완료',sub:'5월 11일 일일 정산 완료 — 176만원 확정',time:'3시간 전',src:'자동 정산'}
+];
+function renderNotifItem(n,showActions){
+  return `<div class="notif-item">
+    <div class="ni-ico ${n.tone}">${n.ico}</div>
+    <div class="ni-body">
+      <div class="ni-title">${n.title}</div>
+      <div class="ni-sub">${n.sub}</div>
+      <div class="ni-meta"><div class="ni-time">${n.time}</div><div class="ni-src">${n.src}</div></div>
+      ${showActions?`<div class="ni-actions"><button class="ni-btn ni-btn-pri" type="button" onclick="processNotification(${n.id})">처리</button></div>`:''}
+    </div>
+    ${showActions?'<div class="ni-dot"></div>':''}
+  </div>`;
+}
+function updateNotifyCount(){
+  const count=pendingNotifs.length;
+  document.getElementById('notify-pending-sec').textContent='미처리 알림'+(count?' ('+count+')':'');
+  const homeEl=document.getElementById('home-notify-count');
+  if(homeEl){
+    homeEl.textContent=count;
+    homeEl.style.color='#fff';
+  }
+  const badge=document.getElementById('nav-notify-badge');
+  if(badge){
+    badge.textContent=count;
+    badge.style.display=count?'flex':'none';
+  }
+  const dot=document.getElementById('header-notify-dot');
+  if(dot) dot.style.display=count?'block':'none';
+}
+function renderNotifications(){
+  const pendingEl=document.getElementById('notify-pending');
+  const doneEl=document.getElementById('notify-done');
+  if(!pendingEl||!doneEl) return;
+  if(pendingNotifs.length){
+    pendingEl.innerHTML=`
+      <button class="submit-btn" type="button" onclick="processAllNotifications()" style="margin-bottom:14px;">✓ 일괄 처리 (${pendingNotifs.length}건)</button>
+      ${pendingNotifs.map(n=>renderNotifItem(n,true)).join('')}
+    `;
+  }else{
+    pendingEl.innerHTML='<div class="notify-empty">미처리 알림이 없습니다.</div>';
+  }
+  doneEl.innerHTML=doneNotifs.map(n=>renderNotifItem(n,false)).join('');
+  updateNotifyCount();
+}
+function processNotification(id){
+  const idx=pendingNotifs.findIndex(n=>n.id===id);
+  if(idx===-1) return;
+  const item={...pendingNotifs[idx],ico:'✅',tone:'ni-green',time:'방금',src:'처리완료'};
+  pendingNotifs.splice(idx,1);
+  doneNotifs.unshift(item);
+  document.getElementById('notify-complete').classList.add('show');
+  renderNotifications();
+}
+function processAllNotifications(){
+  if(!pendingNotifs.length) return;
+  doneNotifs.unshift(...pendingNotifs.map(n=>({...n,ico:'✅',tone:'ni-green',time:'방금',src:'처리완료'})));
+  pendingNotifs=[];
+  document.getElementById('notify-complete').classList.add('show');
+  renderNotifications();
+}
+renderNotifications();
+/* TAB */
+function switchTab(el){
+  el.closest('.tab-bar').querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+/* CONVENIENCE */
+const convCats=[
+  {id:'supplies',ico:'📦',tone:'#0078D4',title:'비품·소모품',desc:'객실 비품, 수건, 소모품을 요청하세요.',items:['객실 어메니티','욕실 소모품','객실 기본 비품','청소 소모품','전기 소모품','프런트 소모품','린넨/수건류'],examples:'칫솔, 치약, 면도기, 샴푸, 생수, 종이컵, 건전지, 전구, 카드키, 수건, 가운'},
+  {id:'repair',ico:'🛠️',tone:'#FF8C00',title:'잔고장·수리',desc:'전구, 욕실, 도어락, 가전 수리를 요청하세요.',items:['전기/조명','욕실/배수','도어락/출입','객실 가전','냉난방/온수','가구/시설','인터넷/공유기','주차장 설비'],examples:'전구 교체, 콘센트 불량, 변기 막힘, 샤워기 고장, 도어락 방전, TV 고장, 와이파이 불량'},
+  {id:'hygiene',ico:'✨',tone:'#107C10',title:'위생·방역',desc:'냄새, 곰팡이, 해충, 소독을 요청하세요.',items:['객실 탈취','욕실 악취','곰팡이 관리','에어컨 케어','매트리스 케어','해충 방역','쓰레기장 방역','정기 소독'],examples:'담배 냄새, 하수구 냄새, 욕실 곰팡이, 에어컨 필터, 매트리스 진드기, 바퀴벌레, 정기 방역'},
+  {id:'waste',ico:'🗑️',tone:'#E81123',title:'폐기물 처리',desc:'대형폐기물, 폐가전, 불용품 수거를 요청하세요.',items:['대형폐기물','폐가전','폐침구','대량 재활용','음식물/악취 폐기','쓰레기장 정리','불용 비품 처리'],examples:'매트리스, 침대 프레임, 의자, TV, 냉장고, 낡은 이불, 술병, 음식물 쓰레기, 파손 비품'},
+  {id:'safety',ico:'🛡️',tone:'#00BCF2',title:'안전·시설 점검',desc:'소방, CCTV, 누수, 전기 점검을 요청하세요.',items:['소방설비','CCTV','전기 안전','누수 점검','출입 시설','주차장 설비','보일러/온수','외부 시설'],examples:'소화기, 감지기, CCTV 녹화, 카메라 각도, 차단기, 콘센트, 누수, 비상구, 간판 조명'}
+];
+const convQuick=['생수 500ml 5박스','칫솔세트 100개','전구 교체','배수구 냄새 제거','에어컨 필터 청소'];
+const convRegular=['비품 정기배송','월 정기 방역','월 시설 점검','분기 에어컨 케어','월 배수구 악취 관리'];
+const convHistory=[
+  {date:'06/04',cat:'비품·소모품',item:'객실 어메니티',loc:'프런트',st:'신청접수',cls:'b-blue',visit:'06/06 오전',result:'접수 확인 대기',company:'NICE업체',manager:'홍길동',phone:'01012341234',handledAt:'배정 전',work:'요청 품목과 수량을 확인한 뒤 담당 업체를 배정할 예정입니다.',images:['https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=500&auto=format&fit=crop','https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=500&auto=format&fit=crop']},
+  {date:'06/03',cat:'잔고장·수리',item:'전기/조명',loc:'305호',st:'방문예정',cls:'b-amber',visit:'06/05 오후',result:'기사 방문 예정',company:'NICE시설관리',manager:'홍길동',phone:'01012341234',handledAt:'06/05 오후 예정',work:'305호 조명 스위치와 전구 상태를 점검하고 현장에서 교체 가능 여부를 확인할 예정입니다.',images:['https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=500&auto=format&fit=crop','https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=500&auto=format&fit=crop']},
+  {date:'06/02',cat:'위생·방역',item:'욕실 악취',loc:'203호',st:'처리중',cls:'b-red',visit:'06/04 야간',result:'원인 확인 중',company:'NICE방역케어',manager:'홍길동',phone:'01012341234',handledAt:'06/04 21:10 진행중',work:'배수구 트랩과 환기 상태를 확인 중이며, 악취 제거제를 1차 시공했습니다. 추가 환기 후 재확인 예정입니다.',images:['https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&auto=format&fit=crop','https://images.unsplash.com/photo-1563453392212-326f5e854473?w=500&auto=format&fit=crop']},
+  {date:'05/30',cat:'안전·시설 점검',item:'CCTV',loc:'주차장',st:'완료',cls:'b-green',visit:'05/31 오후',result:'녹화 장비 점검 완료',company:'NICE보안설비',manager:'홍길동',phone:'01012341234',handledAt:'05/31 16:40 완료',work:'주차장 CCTV 녹화 상태와 카메라 각도를 점검했습니다. 2번 카메라 각도를 조정했고 녹화 상태 정상 확인했습니다.',images:['https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=500&auto=format&fit=crop','https://images.unsplash.com/photo-1558002038-1055907df827?w=500&auto=format&fit=crop']}
+];
+function convComplete(show=false){
+  const el=document.getElementById('conv-complete');
+  el.classList.toggle('show',show);
+}
+function renderConvenienceHome(){
+  convComplete(false);
+  const v=document.getElementById('conv-view');
+  v.innerHTML=`
+    <div class="sec">편의 신청</div>
+    <div class="conv-grid">
+      ${convCats.map(c=>`<div class="conv-card" onclick="renderConvenienceDetail('${c.id}')">
+        <div class="conv-ico" style="background:${c.tone};color:#fff;">${c.ico}</div>
+        <div class="conv-info"><div class="conv-title">${c.title}</div><div class="conv-desc">${c.desc}</div></div>
+        <div class="conv-arrow">›</div>
+      </div>`).join('')}
+    </div>
+    <div class="sec">자주 신청</div>
+    <div class="card"><div class="chip-grid">${convQuick.map(q=>`<button class="chip" onclick="renderConvenienceForm('supplies','${q}')">${q}</button>`).join('')}</div></div>
+    <div class="sec">정기관리</div>
+    <div class="card"><div class="chip-grid">${convRegular.map(q=>`<button class="chip" onclick="renderConvenienceForm('hygiene','${q}')">${q}</button>`).join('')}</div></div>
+    <div class="sec">신청내역</div>
+    <div class="card" style="padding:16px;">${renderConvenienceHistory()}</div>
+  `;
+}
+function renderConvenienceHistory(){
+  return convHistory.map((h,i)=>`<div class="hist-item" onclick="renderConvenienceHistoryDetail(${i})">
+    <div class="hist-top"><div class="hist-title">${h.cat} · ${h.item}</div><div class="badge ${h.cls}">${h.st}</div></div>
+    <div class="hist-meta">신청일 ${h.date} · 위치 ${h.loc}<br>방문 예정 ${h.visit} · ${h.result}</div>
+  </div>`).join('');
+}
+function renderConvenienceHistoryDetail(i){
+  convComplete(false);
+  const h=convHistory[i];
+  document.getElementById('conv-view').innerHTML=`
+    <div class="sec"><span class="back-link" onclick="renderConvenienceHome()">← 신청내역</span></div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">${h.cat} · ${h.item}</div><div class="badge ${h.cls}">${h.st}</div></div>
+      <div class="detail-summary">
+        <div class="detail-mini"><div class="dm-lbl">업체</div><div class="dm-val">${h.company}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">담당자</div><div class="dm-val">${h.manager}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">연락처</div><div class="dm-val">${h.phone}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">처리일시</div><div class="dm-val">${h.handledAt}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">요청 위치</div><div class="dm-val">${h.loc}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">방문 예정</div><div class="dm-val">${h.visit}</div></div>
+      </div>
+      <div class="process-note">${h.work}</div>
+    </div>
+    <div class="sec">증거 이미지</div>
+    <div class="evidence-grid">
+      ${h.images.map((img,idx)=>`<div class="evidence-card"><img src="${img}" alt="처리 증거 이미지 ${idx+1}"><div class="evidence-cap">${idx===0?'현장 확인':'처리 기록'}</div></div>`).join('')}
+    </div>
+  `;
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function renderConvenienceDetail(id){
+  convComplete(false);
+  const c=convCats.find(x=>x.id===id);
+  document.getElementById('conv-view').innerHTML=`
+    <div class="sec"><span class="back-link" onclick="renderConvenienceHome()">← 편의</span></div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">${c.ico} ${c.title}</div></div>
+      <div class="conv-desc">${c.desc}</div>
+    </div>
+    <div class="sec">세부항목</div>
+    <div class="card"><div class="detail-list">
+      ${c.items.map(it=>`<button class="detail-btn" onclick="renderConvenienceForm('${c.id}','${it}')">${it}</button>`).join('')}
+    </div></div>
+  `;
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function renderConvenienceForm(id,item){
+  convComplete(false);
+  const c=convCats.find(x=>x.id===id)||convCats[0];
+  const isSupply=c.id==='supplies';
+  document.getElementById('conv-view').innerHTML=`
+    <div class="sec"><span class="back-link" onclick="renderConvenienceDetail('${c.id}')">← ${c.title}</span></div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">${item} 신청</div></div>
+      ${isSupply?renderSupplyForm(item):renderGeneralForm(c.title,item)}
+    </div>
+  `;
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function renderSupplyForm(item){
+  return `<div class="form-grid">
+    <div class="field"><label>업소명</label><input class="input" value="H STAY 강남점"></div>
+    <div id="supply-items">${supplyItemRow(item)}</div>
+    <button class="add-item-btn" onclick="addSupplyItem()" type="button">품목 추가</button>
+    <div class="field"><label>배송 희망일</label><input class="input" type="date"></div>
+    <div class="field"><label>정기배송 여부</label><select class="select"><option>1회</option><option>매주</option><option>매월</option></select></div>
+    <div class="field"><label>배송 요청사항</label><textarea class="textarea" placeholder="보관 위치나 배송 요청사항을 입력하세요."></textarea></div>
+    <button class="submit-btn" onclick="submitConvenienceRequest()" type="button">신청</button>
+  </div>`;
+}
+function supplyItemRow(item=''){
+  return `<div class="input-row" style="margin-bottom:8px;">
+    <input class="input" placeholder="품목명" value="${item}">
+    <input class="input" type="number" min="1" placeholder="수량">
+    <select class="select"><option>개</option><option>박스</option><option>묶음</option><option>장</option><option>세트</option></select>
+  </div>`;
+}
+function addSupplyItem(){
+  document.getElementById('supply-items').insertAdjacentHTML('beforeend',supplyItemRow());
+}
+function renderGeneralForm(cat,item){
+  return `<div class="form-grid">
+    <div class="field"><label>업소명</label><input class="input" value="H STAY 강남점"></div>
+    <div class="field"><label>요청 위치</label><select class="select"><option>객실</option><option>공용공간</option><option>주차장</option><option>외부</option><option>기계실</option><option>기타</option></select></div>
+    <div class="field"><label>객실번호 또는 상세 위치</label><input class="input" placeholder="예: 305호 욕실, B1 주차장 입구"></div>
+    <div class="field"><label>요청 항목</label><input class="input" value="${cat} · ${item}"></div>
+    <div class="field"><label>긴급도</label><select class="select"><option>일반</option><option>빠름</option><option>긴급</option></select></div>
+    <div class="field"><label>요청 내용</label><textarea class="textarea" placeholder="증상이나 요청 내용을 입력하세요."></textarea></div>
+    <div class="field"><label>사진 첨부</label><div class="photo-box">사진을 첨부하거나 촬영해 주세요.</div></div>
+    <div class="field"><label>희망 방문일</label><input class="input" type="date"></div>
+    <div class="field"><label>희망 시간대</label><select class="select"><option>오전</option><option>오후</option><option>야간</option></select></div>
+    <div class="field"><label>담당자 연락처</label><input class="input" type="tel" placeholder="010-0000-0000"></div>
+    <div class="field"><label>요청 메모</label><textarea class="textarea" placeholder="방문 전 참고할 내용을 입력하세요."></textarea></div>
+    <button class="submit-btn" onclick="submitConvenienceRequest()" type="button">신청</button>
+  </div>`;
+}
+function submitConvenienceRequest(){
+  alert('신청이 접수되었습니다.');
+  renderConvenienceHome();
+  convComplete(true);
+  document.getElementById('main-scroll').scrollTop=0;
+}
+/* ROOM GRID */
+const rooms=[
+  {n:'101',s:'oc',guest:'김민수',checkin:'05/11 14:00',type:'숙박',nights:1},{n:'102',s:'cl'},{n:'103',s:'oc',guest:'박지영',checkin:'05/10 18:00',type:'숙박',nights:2},{n:'104',s:'va'},{n:'105',s:'oc',guest:'이준호',checkin:'05/11 16:00',type:'대실',nights:0},
+  {n:'201',s:'oc',guest:'정수현',checkin:'05/11 19:00',type:'숙박',nights:1},{n:'202',s:'wt'},{n:'203',s:'oc',guest:'최영희',checkin:'05/10 20:00',type:'숙박',nights:2},{n:'204',s:'va'},{n:'205',s:'oc',guest:'강태우',checkin:'05/12 07:00',type:'대실',nights:0},
+  {n:'206',s:'cl'},{n:'207',s:'wt'},{n:'208',s:'oc',guest:'한소희',checkin:'05/11 15:00',type:'숙박',nights:1},{n:'209',s:'oc',guest:'윤서준',checkin:'05/11 17:30',type:'숙박',nights:3},{n:'210',s:'va'},
+  {n:'301',s:'oc',guest:'김○○',checkin:'05/11 17:00',type:'숙박',nights:1,upcoming:true},{n:'302',s:'oc',guest:'오민재',checkin:'05/10 14:00',type:'숙박',nights:2},{n:'303',s:'cl'},{n:'304',s:'oc',guest:'송해린',checkin:'05/11 21:00',type:'숙박',nights:1},{n:'305',s:'oc',guest:'임동현',checkin:'05/11 16:30',type:'대실',nights:0},
+  {n:'401',s:'va'},{n:'402',s:'oc',guest:'노은채',checkin:'05/11 13:00',type:'숙박',nights:1},{n:'403',s:'oc',guest:'배준서',checkin:'05/11 18:00',type:'숙박',nights:2},{n:'404',s:'oc',guest:'고민지',checkin:'05/10 19:00',type:'숙박',nights:3},{n:'405',s:'oc',guest:'서지훈',checkin:'05/11 20:00',type:'숙박',nights:1}
+];
+const checkinToday=[
+  {room:'301',guest:'김○○',time:'오후 5:00',roomType:'디럭스룸',type:'숙박',nights:1,phone:'010-1234-5678',keyIssued:false},
+  {room:'205',guest:'박○○',time:'오후 7:00',roomType:'스탠다드룸',type:'대실',hours:3,phone:'010-2345-6789',keyIssued:false},
+  {room:'401',guest:'이○○',time:'오후 8:30',roomType:'스위트룸',type:'숙박',nights:2,phone:'010-3456-7890',keyIssued:false},
+  {room:'202',guest:'최○○',time:'오전 11:00 체크아웃',roomType:'스탠다드',type:'퇴실',phone:'010-4567-8901',keyIssued:true}
+];
+const sKo={oc:'투숙',va:'공실',cl:'청소',wt:'대기'};
+const sCls={oc:'rm-oc',va:'rm-va',cl:'rm-cl',wt:'rm-wt'};
+const rg=document.getElementById('room-grid');
+rooms.forEach((r,i)=>{
+  const d=document.createElement('div');
+  d.className='room-cell '+sCls[r.s];
+  d.innerHTML='<span class="r-st">'+sKo[r.s]+'</span><span class="r-num">'+r.n+'</span>';
+  if(r.s==='oc'){
+    d.style.cursor='pointer';
+    d.onclick=()=>showRoomDetail(i);
+  }
+  rg.appendChild(d);
+});
+function showRoomDetail(roomIndex){
+  const r=rooms[roomIndex];
+  if(!r.guest) return;
+  const matchingCheckin=checkinToday.find(c=>c.room===r.n);
+  const isUpcoming=matchingCheckin!==undefined;
+  const detail=isUpcoming?matchingCheckin:r;
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.onclick=(e)=>{if(e.target===modal)modal.remove();};
+  modal.innerHTML=`
+    <div class="card" style="max-width:350px;width:100%;margin:0;animation:slideUp 0.2s;box-shadow:0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation();">
+      <div class="card-head" style="margin-bottom:16px;">
+        <div class="card-title">${r.n}호 상세</div>
+        <div style="font-size:20px;cursor:pointer;" onclick="this.closest('[style*=fixed]').remove()">✕</div>
+      </div>
+      <div class="detail-summary">
+        <div class="detail-mini"><div class="dm-lbl">객실</div><div class="dm-val">${r.n}호</div></div>
+        <div class="detail-mini"><div class="dm-lbl">고객명</div><div class="dm-val">${detail.guest||r.guest}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">체크인</div><div class="dm-val">${isUpcoming?detail.time:r.checkin}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">이용형태</div><div class="dm-val">${detail.type||r.type}</div></div>
+        ${detail.phone?`<div class="detail-mini" style="grid-column:1/-1;"><div class="dm-lbl">연락처</div><div class="dm-val">${detail.phone}</div></div>`:''}
+      </div>
+      ${isUpcoming?`
+        <div style="margin-top:14px;">
+          <div class="process-note" style="margin-bottom:10px;">
+            ${detail.keyIssued?'🔑 객실키가 이미 발급되었습니다.':'🔑 객실키를 발급할 수 있습니다.'}
+          </div>
+          <button class="submit-btn" onclick="issueRoomKey('${detail.room}')" ${detail.keyIssued?'disabled style="opacity:0.5;cursor:not-allowed;"':''}>
+            ${detail.keyIssued?'✓ 객실키 발급완료':'🔑 객실키 발급'}
+          </button>
+        </div>
+      `:`
+        <div class="process-note" style="margin-top:14px;">
+          현재 투숙중입니다. ${r.nights>0?r.nights+'박 예약':r.type+' 이용'}
+        </div>
+      `}
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+function getKeyInfo(roomNum){
+  const checkin=checkinToday.find(c=>c.room===roomNum);
+  const room=rooms.find(r=>r.n===roomNum);
+  if(checkin&&checkin.type!=='퇴실'){
+    return {eligible:true,issued:checkin.keyIssued,guest:checkin.guest,status:'체크인 예정',type:checkin.type,time:checkin.time};
+  }
+  if(room&&room.s==='oc'&&room.guest){
+    const pending=checkinToday.find(c=>c.room===roomNum&&!c.keyIssued);
+    return {eligible:true,issued:!pending,guest:room.guest,status:'투숙중',type:room.type,time:room.checkin};
+  }
+  if(room){
+    return {eligible:false,issued:false,guest:null,status:sKo[room.s],type:null,time:null};
+  }
+  return {eligible:false,issued:false,guest:null,status:'-',type:null,time:null};
+}
+function updateKeyPendingCount(){
+  const pending=rooms.filter(r=>{const k=getKeyInfo(r.n);return k.eligible&&!k.issued;}).length;
+  const el=document.getElementById('key-pending-count');
+  if(el) el.textContent=pending>0?pending+'실 미발급':'전체 발급완료';
+}
+function issueRoomKey(room){
+  const item=checkinToday.find(c=>c.room===room);
+  if(item) item.keyIssued=true;
+  else if(!checkinToday.find(c=>c.room===room)){
+    const roomData=rooms.find(r=>r.n===room);
+    checkinToday.push({room,guest:roomData?.guest||'',time:'방금',roomType:'객실',type:roomData?.type||'숙박',nights:1,phone:'',keyIssued:true});
+  }
+  const modal=document.querySelector('[style*="fixed"]');
+  if(modal) modal.remove();
+  if(document.getElementById('pg-key').classList.contains('active')){
+    document.getElementById('key-complete').classList.add('show');
+    renderKeyIssueList();
+  }else{
+    alert(`${room}호 객실키가 발급되었습니다.`);
+  }
+  renderCheckinList();
+  updateKeyPendingCount();
+}
+function showKeyIssueDetail(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-key').classList.add('active');
+  renderKeyIssueList();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function getKeyCellInfo(roomNum){
+  const k=getKeyInfo(roomNum);
+  if(!k.eligible) return {cls:'rm-key-na',label:'-',clickable:false};
+  if(k.issued) return {cls:'rm-key-yes',label:'있음',clickable:false};
+  return {cls:'rm-key-no',label:'없음',clickable:true};
+}
+function showKeyRoomModal(roomNum){
+  const k=getKeyInfo(roomNum);
+  if(!k.eligible||k.issued) return;
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.onclick=(e)=>{if(e.target===modal)modal.remove();};
+  modal.innerHTML=`
+    <div class="card" style="max-width:320px;width:100%;margin:0;animation:slideUp 0.2s;box-shadow:0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation();">
+      <div class="card-head" style="margin-bottom:16px;">
+        <div class="card-title">${roomNum}호 키 발급</div>
+        <div style="font-size:20px;cursor:pointer;" onclick="this.closest('[style*=fixed]').remove()">✕</div>
+      </div>
+      <div class="process-note" style="margin-bottom:14px;">객실키가 아직 발급되지 않았습니다.</div>
+      <button class="submit-btn" onclick="issueRoomKey('${roomNum}')" type="button">🔑 키 발급</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+function renderKeyIssueList(){
+  document.getElementById('key-complete').classList.remove('show');
+  const pending=rooms.filter(r=>{const k=getKeyInfo(r.n);return k.eligible&&!k.issued;});
+  const issued=rooms.filter(r=>{const k=getKeyInfo(r.n);return k.eligible&&k.issued;});
+  document.getElementById('key-view').innerHTML=`
+    <div class="sec">키 발급 현황</div>
+    <div class="detail-summary" style="margin-bottom:12px;">
+      <div class="detail-mini"><div class="dm-lbl">키 없음</div><div class="dm-val" style="color:var(--amber);">${pending.length}실</div></div>
+      <div class="detail-mini"><div class="dm-lbl">키 있음</div><div class="dm-val" style="color:var(--green);">${issued.length}실</div></div>
+      <div class="detail-mini"><div class="dm-lbl">해당없음</div><div class="dm-val">${rooms.length-issued.length-pending.length}실</div></div>
+      <div class="detail-mini"><div class="dm-lbl">전체 호실</div><div class="dm-val">${rooms.length}실</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">호실 현황</div>
+      </div>
+      <div class="room-grid">
+        ${rooms.map(r=>{
+          const c=getKeyCellInfo(r.n);
+          const click=c.clickable?`onclick="showKeyRoomModal('${r.n}')" style="cursor:pointer;"`:'';
+          return `<div class="room-cell ${c.cls}" ${click}>
+            <span class="r-st">${c.label}</span>
+            <span class="r-num">${r.n}</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="room-legend">
+        <div class="leg"><div class="leg-dot" style="background:#10b981;"></div>키 있음</div>
+        <div class="leg"><div class="leg-dot" style="background:#f59e0b;"></div>키 없음</div>
+        <div class="leg"><div class="leg-dot" style="background:#b0b7c8;"></div>해당없음</div>
+      </div>
+    </div>
+    <div class="sec"><span class="back-link" onclick="navTo('home')">← 홈으로</span></div>
+  `;
+  updateKeyPendingCount();
+}
+function renderCheckinList(){
+  const list=document.getElementById('checkin-list');
+  list.innerHTML=checkinToday.map(c=>{
+    const icon=c.type==='숙박'?'🏨':c.type==='대실'?'🛎':c.type==='퇴실'?'👤':'🧳';
+    const badge=c.type==='숙박'?'b-green':c.type==='대실'?'b-amber':'b-red';
+    const desc=c.type==='퇴실'?c.time+' · '+c.roomType+' '+c.room+'호':c.time+' · '+c.roomType+' '+c.room+'호 · '+(c.nights?c.nights+'박':c.hours+'시간');     
+    return `<div class="res-item" onclick="showCheckinDetail('${c.room}')">
+      <div class="res-av">${icon}</div>
+      <div class="res-info">
+        <div class="res-name">${c.guest} 고객</div>
+        <div class="res-desc">${desc}</div>
+      </div>
+      <div class="badge ${badge}">${c.type}</div>
+    </div>`;
+  }).join('');
+}
+function showCheckinDetail(room){
+  const roomData=rooms.find(r=>r.n===room);
+  if(roomData) showRoomDetail(rooms.indexOf(roomData));
+}
+renderCheckinList();
+updateKeyPendingCount();
+/* SALES CHART */
+const sd=[
+  {d:'05/12',l:'오늘',st:2,sh:3,amt:128,t:true},
+  {d:'05/11',l:'어제',st:4,sh:2,amt:176,t:false},
+  {d:'05/10',l:'토',st:3,sh:5,amt:154,t:false},
+  {d:'05/09',l:'금',st:5,sh:1,amt:210,t:false},
+  {d:'05/08',l:'목',st:2,sh:3,amt:118,t:false},
+  {d:'05/07',l:'수',st:3,sh:4,amt:148,t:false},
+  {d:'05/06',l:'화',st:6,sh:2,amt:192,t:false},
+];
+const mx=Math.max(...sd.map(x=>x.amt));
+const br=document.getElementById('bars-row');
+const blr=document.getElementById('bar-lbl-row');
+sd.forEach(s=>{
+  const col=document.createElement('div');col.className='bar-col';
+  const b=document.createElement('div');b.className='bar-el '+(s.t?'bar-today':'bar-past');
+  b.style.height=Math.round((s.amt/mx)*86)+'px';
+  col.appendChild(b);br.appendChild(col);
+  const l=document.createElement('div');l.className='bar-lbl';l.textContent=s.l;
+  blr.appendChild(l);
+});
+const sl=document.getElementById('sales-list');
+sd.forEach(s=>{
+  const pct=Math.round((s.amt/mx)*100);
+  sl.innerHTML+=`<div class="sli">
+    <div class="sli-dt"><div class="sli-dn">${s.d.slice(3)}</div><div class="sli-dl">${s.l}</div></div>
+    <div class="sli-bar"><div class="sli-track"><div class="sli-fill" style="width:${pct}%"></div></div><div class="sli-sub">숙박 ${s.st}건 + 대실 ${s.sh}건</div></div>
+    <div class="sli-price">${s.amt}만</div>
+  </div>`;
+});
+/* CALENDAR */
+const resDays=[1,5,8,12,15,16,19,22,25,26,29];
+const cg=document.getElementById('cal-grid');
+const startDay=4;
+for(let i=0;i<startDay;i++) cg.innerHTML+=`<div class="cd other">${27+i}</div>`;
+for(let d=1;d<=31;d++){
+  const isT=d===12,hasR=resDays.includes(d);
+  cg.innerHTML+=`<div class="cd ${isT?'today':''}${hasR&&!isT?' has-r':''}">${d}${hasR?'<div class="cd-dot"></div>':''}</div>`;
+}
+const ef=7-((startDay+31)%7);
+if(ef<7){for(let i=1;i<=ef;i++) cg.innerHTML+=`<div class="cd other">${i}</div>`;}
+
+/* CHECKOUT DETAIL */
+const checkoutRooms=[
+  {room:'202',guest:'최○○',checkin:'05/11 14:00',checkout:'05/12 11:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
+  {room:'305',guest:'김○○',checkin:'05/11 17:00',checkout:'05/12 11:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
+  {room:'401',guest:'이○○',checkin:'05/11 20:30',checkout:'05/12 12:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
+  {room:'205',guest:'박○○',checkin:'05/12 07:00',checkout:'05/12 10:00',type:'대실',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
+  {room:'303',guest:'정○○',checkin:'05/11 14:00',checkout:'05/12 14:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'}
+];
+function showCheckoutDetail(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-checkout').classList.add('active');
+  renderCheckoutList();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function renderCheckoutList(){
+  document.getElementById('checkout-complete').classList.remove('show');
+  document.getElementById('checkout-view').innerHTML=`
+    <div class="sec">체크아웃 예정 (${checkoutRooms.length}실)</div>
+    <div class="card" style="padding:16px;">
+      ${checkoutRooms.map((r,i)=>`<div class="hist-item" onclick="renderCheckoutForm(${i})">
+        <div class="hist-top">
+          <div class="hist-title">${r.room}호 · ${r.guest} 고객</div>
+          <div class="badge ${r.status==='done'?'b-green':'b-amber'}">${r.status==='done'?'완료':'대기'}</div>
+        </div>
+        <div class="hist-meta">${r.checkin} 체크인 → ${r.checkout} 체크아웃<br>${r.type} · 결제 ${r.payment} · 청소 ${r.cleaning}</div>
+      </div>`).join('')}
+    </div>
+    <div class="sec"><span class="back-link" onclick="navTo('home')">← 홈으로</span></div>
+  `;
+}
+function renderCheckoutForm(i){
+  const r=checkoutRooms[i];
+  document.getElementById('checkout-view').innerHTML=`
+    <div class="sec"><span class="back-link" onclick="renderCheckoutList()">← 체크아웃 목록</span></div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">${r.room}호 체크아웃 처리</div>
+      </div>
+      <div class="detail-summary">
+        <div class="detail-mini"><div class="dm-lbl">객실</div><div class="dm-val">${r.room}호</div></div>
+        <div class="detail-mini"><div class="dm-lbl">고객명</div><div class="dm-val">${r.guest}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">체크인</div><div class="dm-val">${r.checkin}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">체크아웃</div><div class="dm-val">${r.checkout}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">이용 형태</div><div class="dm-val">${r.type}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">결제 상태</div><div class="dm-val">${r.payment}</div></div>
+      </div>
+      <div class="form-grid">
+        <div class="field"><label>특이사항</label>
+          <textarea class="textarea" placeholder="파손, 분실, 추가 요금 등 특이사항을 입력하세요."></textarea>
+        </div>
+        <div class="field"><label>사진 증거</label>
+          <div class="photo-box">객실 상태 사진을 첨부하세요.</div>
+        </div>
+        <button class="submit-btn" onclick="submitCheckout(${i})" type="button">체크아웃 완료</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function submitCheckout(i){
+  checkoutRooms[i].status='done';
+  checkoutRooms[i].cleaning='청소대기';
+  document.getElementById('checkout-complete').classList.add('show');
+  renderCheckoutList();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+
+/* SMS DETAIL */
+const smsTemplates=[
+  {id:'checkin',title:'체크인 안내',desc:'체크인 시간, 객실번호, 와이파이 정보',content:'[H STAY 강남점] 안녕하세요 고객님, 오늘 {{time}} 체크인 예정이십니다. 객실: {{room}}호, 와이파이: HSTAY_GN / 비밀번호: hstay2026'},
+  {id:'checkout',title:'체크아웃 안내',desc:'체크아웃 시간, 퇴실 절차 안내',content:'[H STAY 강남점] {{name}} 고객님, 체크아웃 시간은 {{time}}입니다. 퇴실 시 카드키를 프런트에 반납해주시고, 미니바 이용 내역을 확인해주세요.'},
+  {id:'thankyou',title:'감사 인사',desc:'퇴실 후 감사 메시지 및 리뷰 요청',content:'[H STAY 강남점] {{name}} 고객님, 저희 호텔을 이용해주셔서 감사합니다. 다음에도 더 나은 서비스로 모시겠습니다. 리뷰를 남겨주시면 감사하겠습니다.'},
+  {id:'promo',title:'프로모션 안내',desc:'할인, 이벤트, 특별 프로모션',content:'[H STAY 강남점] 특별 할인 이벤트! 평일 숙박 30% 할인 + 조식 무료 제공. 예약 문의: 02-1234-5678'},
+  {id:'custom',title:'직접 작성',desc:'원하는 내용을 직접 입력',content:''}
+];
+const smsRecipients=[
+  {name:'김○○',phone:'010-1234-5678',room:'301',checkin:'17:00',checkout:'11:00',status:'체크인 예정'},
+  {name:'박○○',phone:'010-2345-6789',room:'205',checkin:'19:00',checkout:'22:00',status:'대실 예정'},
+  {name:'이○○',phone:'010-3456-7890',room:'401',checkin:'20:30',checkout:'12:00',status:'체크인 예정'},
+  {name:'최○○',phone:'010-4567-8901',room:'202',checkin:'',checkout:'11:00',status:'체크아웃 예정'},
+  {name:'정○○',phone:'010-5678-9012',room:'303',checkin:'14:00',checkout:'14:00',status:'투숙중'}
+];
+function showSmsDetail(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-sms').classList.add('active');
+  renderSmsTemplateList();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function renderSmsTemplateList(){
+  document.getElementById('sms-complete').classList.remove('show');
+  document.getElementById('sms-view').innerHTML=`
+    <div class="sec">문자 발송</div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">발송 템플릿 선택</div></div>
+      ${smsTemplates.map((t,i)=>`<div class="hist-item" onclick="renderSmsForm(${i})">
+        <div class="hist-top"><div class="hist-title">${t.title}</div></div>
+        <div class="hist-meta">${t.desc}</div>
+      </div>`).join('')}
+    </div>
+    <div class="sec">발송 이력</div>
+    <div class="card" style="padding:16px;">
+      <div class="hist-item">
+        <div class="hist-top"><div class="hist-title">체크인 안내 문자</div><div class="badge b-green">발송완료</div></div>
+        <div class="hist-meta">05/12 09:20 · 12명 발송 성공</div>
+      </div>
+      <div class="hist-item">
+        <div class="hist-top"><div class="hist-title">프로모션 안내</div><div class="badge b-green">발송완료</div></div>
+        <div class="hist-meta">05/11 14:30 · 38명 발송 성공</div>
+      </div>
+    </div>
+    <div class="sec"><span class="back-link" onclick="navTo('home')">← 홈으로</span></div>
+  `;
+}
+function renderSmsForm(i){
+  const t=smsTemplates[i];
+  document.getElementById('sms-view').innerHTML=`
+    <div class="sec"><span class="back-link" onclick="renderSmsTemplateList()">← 템플릿 목록</span></div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">${t.title}</div></div>
+      <div class="form-grid">
+        <div class="field"><label>수신 대상 선택</label>
+          <select class="select" id="sms-target">
+            <option value="all">전체 고객 (${smsRecipients.length}명)</option>
+            <option value="checkin">체크인 예정 고객</option>
+            <option value="checkout">체크아웃 예정 고객</option>
+            <option value="staying">투숙중 고객</option>
+            <option value="custom">개별 선택</option>
+          </select>
+        </div>
+        <div class="field"><label>발송 내용</label>
+          <textarea class="textarea" style="min-height:120px;" id="sms-content">${t.content}</textarea>
+        </div>
+        <div class="process-note">
+          💡 변수 안내: {{name}} 고객명, {{room}} 객실번호, {{time}} 시간, {{phone}} 연락처
+        </div>
+        <div class="field"><label>예상 발송 인원</label>
+          <input class="input" value="${smsRecipients.length}명" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="sec">발송 대상 목록</div>
+    <div class="card" style="padding:16px;">
+      ${smsRecipients.map((r,idx)=>`<div class="hist-item">
+        <div class="hist-top">
+          <div class="hist-title">${r.name} · ${r.phone}</div>
+          <div class="badge b-blue">${r.status}</div>
+        </div>
+        <div class="hist-meta">${r.room}호${r.checkin?' · 체크인 '+r.checkin:''}${r.checkout?' · 체크아웃 '+r.checkout:''}</div>
+      </div>`).join('')}
+    </div>
+    <div class="card">
+      <button class="submit-btn" onclick="submitSms()" type="button">문자 발송하기</button>
+    </div>
+  `;
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function submitSms(){
+  document.getElementById('sms-complete').classList.add('show');
+  renderSmsTemplateList();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+
+/* DAILY REPORT DETAIL */
+function showDailyReportDetail(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-report').classList.add('active');
+  renderDailyReport();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function renderDailyReport(){
+  const today='2026년 5월 12일';
+  document.getElementById('report-view').innerHTML=`
+    <div class="sec">일일 리포트 · ${today}</div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">오늘의 요약</div></div>
+      <div class="detail-summary">
+        <div class="detail-mini"><div class="dm-lbl">총 매출</div><div class="dm-val">128만원</div></div>
+        <div class="detail-mini"><div class="dm-lbl">투숙객</div><div class="dm-val">18명</div></div>
+        <div class="detail-mini"><div class="dm-lbl">체크인</div><div class="dm-val">12건</div></div>
+        <div class="detail-mini"><div class="dm-lbl">체크아웃</div><div class="dm-val">5건</div></div>
+        <div class="detail-mini"><div class="dm-lbl">가동률</div><div class="dm-val">72%</div></div>
+        <div class="detail-mini"><div class="dm-lbl">평균 객단가</div><div class="dm-val">7.1만원</div></div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="card-head"><div class="card-title">매출 분석</div></div>
+      <div class="sli">
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:6px;">숙박 매출</div>
+          <div class="sli-track"><div class="sli-fill" style="width:68%;"></div></div>
+        </div>
+        <div class="sli-price">87만원</div>
+      </div>
+      <div class="sli">
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:6px;">대실 매출</div>
+          <div class="sli-track"><div class="sli-fill" style="width:32%;background:var(--amber);"></div></div>
+        </div>
+        <div class="sli-price">41만원</div>
+      </div>
+      <div class="sli">
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:6px;">부대 매출 (미니바 등)</div>
+          <div class="sli-track"><div class="sli-fill" style="width:15%;background:var(--green);"></div></div>
+        </div>
+        <div class="sli-price">19만원</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div class="card-title">객실 현황</div></div>
+      <div class="stat-grid">
+        <div class="stat-card" style="text-align:center;">
+          <div class="stat-lbl">투숙중</div>
+          <div class="stat-val" style="font-size:26px;color:var(--accent);">18</div>
+        </div>
+        <div class="stat-card" style="text-align:center;">
+          <div class="stat-lbl">공실</div>
+          <div class="stat-val" style="font-size:26px;color:var(--green);">4</div>
+        </div>
+        <div class="stat-card" style="text-align:center;">
+          <div class="stat-lbl">청소대기</div>
+          <div class="stat-val" style="font-size:26px;color:var(--amber);">2</div>
+        </div>
+        <div class="stat-card" style="text-align:center;">
+          <div class="stat-lbl">청소중</div>
+          <div class="stat-val" style="font-size:26px;color:var(--red);">1</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button class="submit-btn" onclick="downloadReport()" type="button">📥 리포트 다운로드 (Excel)</button>
+    </div>
+    <div class="sec"><span class="back-link" onclick="navTo('home')">← 홈으로</span></div>
+  `;
+}
+function downloadReport(){
+  alert('Excel 리포트가 다운로드되었습니다.');
+}
+
+/* SCHEDULE */
+const SCHEDULE_TODAY='2026-05-12';
+let scheduleViewDate=SCHEDULE_TODAY;
+let scheduleCalYear=2026;
+let scheduleCalMonth=5;
+let ownerSchedule=[
+  {id:1,date:'2026-05-12',time:'09:00',title:'일일 정산 확인',cat:'정산',cls:'b-blue',sub:'전일 매출 176만원 확정',done:false},
+  {id:2,date:'2026-05-12',time:'11:00',title:'프런트 교대',cat:'근무',cls:'b-green',sub:'김○○ → 박○○ 교대',done:false},
+  {id:3,date:'2026-05-12',time:'14:00',title:'2F 복도 시설 점검',cat:'점검',cls:'b-amber',sub:'조명, CCTV, 비상구 확인',done:false},
+  {id:4,date:'2026-05-12',time:'17:00',title:'체크인 피크 대비',cat:'운영',cls:'b-red',sub:'체크인 12건 · 키 발급 준비',done:false},
+  {id:5,date:'2026-05-12',time:'22:00',title:'야간 순찰',cat:'점검',cls:'b-amber',sub:'1F 로비 · B1 주차장',done:true}
+];
+let scheduleIdCounter=6;
+const schedCatCls={정산:'b-blue',근무:'b-green',점검:'b-amber',운영:'b-red','관제사 안내':'b-blue',기타:'b-gray'};
+function formatScheduleDate(d){
+  const p=d.split('-');
+  return parseInt(p[1])+'월 '+parseInt(p[2])+'일';
+}
+function sortSchedules(){
+  ownerSchedule.sort((a,b)=>{
+    const dc=a.date.localeCompare(b.date);
+    if(dc!==0) return dc;
+    return (a.time==='종일'?'00:00':a.time).localeCompare(b.time==='종일'?'00:00':b.time);
+  });
+}
+function getSchedulesForDate(date){
+  return ownerSchedule.filter(s=>s.date===date);
+}
+function shiftScheduleMonth(delta){
+  scheduleCalMonth+=delta;
+  if(scheduleCalMonth>12){scheduleCalMonth=1;scheduleCalYear++;}
+  if(scheduleCalMonth<1){scheduleCalMonth=12;scheduleCalYear--;}
+  renderScheduleList();
+}
+function selectScheduleDate(dateStr){
+  scheduleViewDate=dateStr;
+  scheduleCalYear=parseInt(dateStr.split('-')[0],10);
+  scheduleCalMonth=parseInt(dateStr.split('-')[1],10);
+  renderScheduleList();
+}
+function buildScheduleCalendarHtml(){
+  const y=scheduleCalYear,m=scheduleCalMonth;
+  const firstDay=new Date(y,m-1,1).getDay();
+  const daysInMonth=new Date(y,m,0).getDate();
+  const daysInPrevMonth=new Date(y,m-1,0).getDate();
+  const schedDates=new Set(ownerSchedule.filter(s=>{
+    const p=s.date.split('-').map(Number);
+    return p[0]===y&&p[1]===m;
+  }).map(s=>parseInt(s.date.split('-')[2],10)));
+  let html='';
+  for(let i=0;i<firstDay;i++) html+=`<div class="cd other">${daysInPrevMonth-firstDay+i+1}</div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const dateStr=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=dateStr===SCHEDULE_TODAY;
+    const isSelected=dateStr===scheduleViewDate;
+    const hasSched=schedDates.has(d);
+    let cls='cd';
+    if(isSelected) cls+=' selected';
+    else if(isToday) cls+=' today';
+    if(hasSched&&!isSelected) cls+=' has-r';
+    html+=`<div class="${cls}" onclick="selectScheduleDate('${dateStr}')">${d}${hasSched?'<div class="cd-dot"></div>':''}</div>`;
+  }
+  const remainder=(firstDay+daysInMonth)%7;
+  if(remainder) for(let i=1;i<=7-remainder;i++) html+=`<div class="cd other">${i}</div>`;
+  return html;
+}
+function renderScheduleItem(s,showCheck){
+  return `<div class="sched-item${s.done?' done':''}">
+    <div class="sched-time">${s.time}</div>
+    <div class="sched-body">
+      <div class="sched-top">
+        <div class="sched-title">${s.title}</div>
+        <div class="badge ${s.cls}">${s.cat}</div>
+      </div>
+      <div class="sched-sub">${s.sub}</div>
+    </div>
+    ${showCheck?`<div class="sched-check${s.done?' on':''}" onclick="toggleSchedule(${s.id})">${s.done?'✓':''}</div>`:''}
+  </div>`;
+}
+function updateScheduleCount(){
+  const pending=getSchedulesForDate(SCHEDULE_TODAY).filter(s=>!s.done).length;
+  const el=document.getElementById('schedule-pending-count');
+  if(el) el.textContent=pending>0?pending+'건 예정':'오늘 완료';
+}
+function renderHomeSchedulePreview(){
+  const el=document.getElementById('home-schedule-preview');
+  if(!el) return;
+  const upcoming=getSchedulesForDate(SCHEDULE_TODAY).filter(s=>!s.done).slice(0,3);
+  el.innerHTML=upcoming.length
+    ?`${upcoming.map(s=>renderScheduleItem(s,false)).join('')}
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <span class="card-link" onclick="showScheduleDetail()">전체 일정 보기 →</span>
+      </div>`
+    :'<div class="notify-empty" style="padding:12px;">오늘 남은 일정이 없습니다.</div>';
+}
+function showScheduleDetail(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-schedule').classList.add('active');
+  renderScheduleList();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function renderScheduleList(){
+  document.getElementById('schedule-complete').classList.remove('show');
+  const daySchedules=getSchedulesForDate(scheduleViewDate);
+  const pending=daySchedules.filter(s=>!s.done);
+  const done=daySchedules.filter(s=>s.done);
+  document.getElementById('schedule-view').innerHTML=`
+    <div class="sec">점주 스케줄</div>
+    <div class="card">
+      <div class="cal-nav">
+        <div class="cal-nb" onclick="shiftScheduleMonth(-1)">◀</div>
+        <div class="cal-month">${scheduleCalYear}년 ${scheduleCalMonth}월</div>
+        <div class="cal-nb" onclick="shiftScheduleMonth(1)">▶</div>
+      </div>
+      <div class="cal-hdr"><div>일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div>토</div></div>
+      <div class="cal-grid">${buildScheduleCalendarHtml()}</div>
+      <div class="room-legend" style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div class="leg"><div class="leg-dot" style="background:var(--green);"></div>일정 있음</div>
+        <div class="leg"><div class="leg-dot" style="background:var(--accent);"></div>선택됨</div>
+      </div>
+    </div>
+    <div class="sec">${formatScheduleDate(scheduleViewDate)} 일정</div>
+    <div class="detail-summary" style="margin-bottom:12px;">
+      <div class="detail-mini"><div class="dm-lbl">예정</div><div class="dm-val" style="color:var(--amber);">${pending.length}건</div></div>
+      <div class="detail-mini"><div class="dm-lbl">완료</div><div class="dm-val" style="color:var(--green);">${done.length}건</div></div>
+      <div class="detail-mini"><div class="dm-lbl">다음 일정</div><div class="dm-val">${pending[0]?pending[0].time:'-'}</div></div>
+      <div class="detail-mini"><div class="dm-lbl">마지막</div><div class="dm-val">${daySchedules[daySchedules.length-1]?.time||'-'}</div></div>
+    </div>
+    <div class="card" style="padding:16px;">
+      <div class="card-head" style="margin-bottom:4px;">
+        <div class="card-title">${scheduleViewDate===SCHEDULE_TODAY?'오늘':'선택일'} 일정</div>
+        <div class="card-link" onclick="renderScheduleForm()">+ 추가</div>
+      </div>
+      ${daySchedules.length?daySchedules.map(s=>renderScheduleItem(s,true)).join(''):'<div class="notify-empty" style="padding:12px;">등록된 일정이 없습니다.</div>'}
+    </div>
+    <div class="sec"><span class="back-link" onclick="navTo('home')">← 홈으로</span></div>
+  `;
+  updateScheduleCount();
+  renderHomeSchedulePreview();
+}
+function renderScheduleForm(){
+  document.getElementById('schedule-view').innerHTML=`
+    <div class="sec"><span class="back-link" onclick="renderScheduleList()">← 스케줄</span></div>
+    <div class="card">
+      <div class="card-head"><div class="card-title">일정 추가</div></div>
+      <div class="form-grid">
+        <div class="field"><label>날짜</label><input class="input" id="sched-date" type="date" value="${scheduleViewDate}"></div>
+        <div class="field"><label>시간</label>
+          <select class="select" id="sched-time-type" onchange="document.getElementById('sched-time-field').style.display=this.value==='allday'?'none':'block'">
+            <option value="pick">시간 지정</option>
+            <option value="allday">종일</option>
+          </select>
+        </div>
+        <div class="field" id="sched-time-field"><label>시간 선택</label><input class="input" id="sched-time" type="time" value="15:00"></div>
+        <div class="field"><label>제목</label><input class="input" id="sched-title" placeholder="예: 시설 점검"></div>
+        <div class="field"><label>분류</label>
+          <select class="select" id="sched-cat">
+            <option>정산</option><option>근무</option><option>점검</option><option>운영</option><option>관제사 안내</option><option>기타</option>
+          </select>
+        </div>
+        <div class="field"><label>메모</label><textarea class="textarea" id="sched-sub" placeholder="상세 내용을 입력하세요."></textarea></div>
+        <button class="submit-btn" type="button" onclick="addSchedule()">등록</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function addSchedule(){
+  const date=document.getElementById('sched-date').value||SCHEDULE_TODAY;
+  const timeType=document.getElementById('sched-time-type').value;
+  const time=timeType==='allday'?'종일':(document.getElementById('sched-time').value||'00:00');
+  const title=document.getElementById('sched-title').value.trim();
+  const cat=document.getElementById('sched-cat').value;
+  const sub=document.getElementById('sched-sub').value.trim();
+  if(!title){alert('제목을 입력해주세요.');return;}
+  ownerSchedule.push({id:scheduleIdCounter++,date,time,title,cat,cls:schedCatCls[cat]||'b-gray',sub:sub||'-',done:false});
+  sortSchedules();
+  scheduleViewDate=date;
+  scheduleCalYear=parseInt(date.split('-')[0],10);
+  scheduleCalMonth=parseInt(date.split('-')[1],10);
+  document.getElementById('schedule-complete').classList.add('show');
+  renderScheduleList();
+  document.getElementById('main-scroll').scrollTop=0;
+}
+function toggleSchedule(id){
+  const item=ownerSchedule.find(s=>s.id===id);
+  if(item) item.done=!item.done;
+  renderScheduleList();
+}
+renderHomeSchedulePreview();
+updateScheduleCount();
+</script>
+</body>
+</html>
