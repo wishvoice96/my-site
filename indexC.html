@@ -94,8 +94,6 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
 .r-st{font-size:7px;font-weight:600;text-transform:uppercase;opacity:.85;}.r-num{font-size:12px;font-weight:600;margin-top:2px;}
 .rm-oc{background:rgba(59,130,246,0.2);border-color:rgba(59,130,246,0.35);color:#93C5FD;}
 .rm-va{background:var(--green-lt);border-color:rgba(34,197,94,0.3);color:var(--green);}
-.rm-cl{background:var(--amber-lt);border-color:rgba(245,158,11,0.3);color:var(--amber);}
-.rm-wt{background:var(--red-lt);border-color:rgba(239,68,68,0.3);color:var(--red);}
 .rm-key-yes{background:var(--green-lt);color:var(--green);}.rm-key-no{background:var(--amber-lt);color:var(--amber);}
 .rm-key-na{background:var(--bg-input);color:var(--text3);}.room-cell.rm-key-na,.room-cell.rm-key-yes{cursor:default;}
 .room-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
@@ -106,6 +104,11 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
 .qa-pill:active{transform:scale(0.96);border-color:var(--accent);}
 .qa-pill-ico{font-size:18px;}.qa-pill-txt{font-size:12px;font-weight:600;color:var(--text1);white-space:nowrap;}
 .qa-pill-sub{font-size:10px;color:var(--text3);margin-left:4px;}
+.qa-pill.on{border-color:var(--green);background:rgba(34,197,94,0.12);}
+.qa-pill.on .qa-pill-sub{color:var(--green);}
+.qa-pill.off{border-color:var(--red);background:rgba(239,68,68,0.08);opacity:.85;}
+.qa-pill.off .qa-pill-sub{color:var(--red);}
+.sales-toggle-card{margin-top:8px;}
 .qa-grid{display:none;}
 .qa-item{display:none;}
 .cam-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -119,7 +122,14 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
 .event-item:last-child{margin-bottom:0;}
 .ev-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .ev-tag{font-size:9px;font-weight:700;padding:4px 8px;border-radius:6px;text-transform:uppercase;}
-.tag-ai{background:var(--red-lt);color:var(--red);}.tag-sensor{background:var(--green-lt);color:var(--green);}.tag-env{background:var(--blue-lt);color:var(--blue);}
+.tag-ai{background:var(--red-lt);color:var(--red);}.tag-sensor{background:var(--green-lt);color:var(--green);}
+.tag-fire{background:#fee2e2;color:#991b1b;border:1px solid #fecaca;}
+.tag-security{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;}
+.tag-leak{background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe;}
+.event-item.ev-critical{border-color:#fecaca;background:#fff5f5;}
+.home-alert-critical{background:#fff5f5;border-radius:14px;padding:4px 8px;margin:0 -8px;}
+.home-alert-critical .ni-title{color:var(--red-dk);}
+.tag-env{background:var(--blue-lt);color:var(--blue);}
 .ev-time{font-size:10px;color:var(--text3);}.ev-title{font-size:13px;font-weight:600;color:var(--text1);}.ev-desc{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5;}
 .ev-btns{display:flex;gap:8px;margin-top:12px;}
 .ev-btn{flex:1;height:38px;border-radius:10px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
@@ -240,10 +250,10 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
       <div class="content">
         <div class="ai-strip">
           <div class="ai-badge">✦ AI 운영 코치</div>
-          <p class="ai-msg">오늘 <strong>키 미발급 3실</strong>과 <strong>203호 온도 이상</strong>을 먼저 처리하면 체크인 대기 시간을 40% 줄일 수 있어요.</p>
+          <p class="ai-msg">긴급 알림 <strong>화재·누수·미성년자 감지</strong> 3건이 있습니다. 관제실에서 즉시 확인하세요.</p>
           <div class="ai-actions">
-            <button class="ai-btn ai-btn-pri" type="button" onclick="showKeyIssueDetail()">키 일괄 발급</button>
-            <button class="ai-btn ai-btn-sec" type="button" onclick="navTo('monitor')">원격 제어</button>
+            <button class="ai-btn ai-btn-pri" type="button" onclick="navTo('monitor')">관제실 이동</button>
+            <button class="ai-btn ai-btn-sec" type="button" onclick="navTo('notify')">전체 알림</button>
           </div>
         </div>
 
@@ -252,6 +262,9 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
           <span class="sec-count" id="priority-count">3건</span>
         </div>
         <div class="priority-list" id="priority-list"></div>
+
+        <div class="sec" id="home-alert-sec">긴급 알림</div>
+        <div class="card" style="padding:16px;" id="home-alert-list"></div>
 
         <div class="rev-card">
           <div>
@@ -267,9 +280,9 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
         <div class="sec">오늘 현황</div>
         <div class="kpi-scroll">
           <div class="kpi-chip"><div class="kpi-lbl">현재 투숙</div><div class="kpi-val">18</div><div class="kpi-sub">25실 중</div></div>
-          <div class="kpi-chip"><div class="kpi-lbl">체크인</div><div class="kpi-val">12</div><div class="kpi-sub">오늘 예정</div></div>
+          <div class="kpi-chip"><div class="kpi-lbl">공실</div><div class="kpi-val">7</div><div class="kpi-sub">즉시 입실</div></div>
           <div class="kpi-chip"><div class="kpi-lbl">대실</div><div class="kpi-val">7</div><div class="kpi-sub">오늘 기준</div></div>
-          <div class="kpi-chip alert"><div class="kpi-lbl">미처리 알림</div><div class="kpi-val" id="home-notify-count">3</div><div class="kpi-sub">즉시 확인</div></div>
+          <div class="kpi-chip alert"><div class="kpi-lbl">미처리 알림</div><div class="kpi-val" id="home-notify-count">5</div><div class="kpi-sub">즉시 확인</div></div>
         </div>
 
         <div class="sec">객실 현황</div>
@@ -282,23 +295,33 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
           <div class="room-legend">
             <div class="leg"><div class="leg-dot" style="background:#3B82F6;"></div>투숙</div>
             <div class="leg"><div class="leg-dot" style="background:#22C55E;"></div>공실</div>
-            <div class="leg"><div class="leg-dot" style="background:#F59E0B;"></div>청소</div>
-            <div class="leg"><div class="leg-dot" style="background:#EF4444;"></div>대기</div>
           </div>
         </div>
-
-        <div class="sec">오늘 체크인</div>
-        <div class="card" id="checkin-list"></div>
-
         <div class="sec">오늘 일정</div>
         <div class="card" id="home-schedule-preview"></div>
 
         <div class="sec">빠른 실행</div>
         <div class="qa-scroll">
-          <div class="qa-pill" onclick="showKeyIssueDetail()"><span class="qa-pill-ico">🔑</span><span class="qa-pill-txt">키 발급</span><span class="qa-pill-sub" id="key-pending-count">3실</span></div>
-          <div class="qa-pill" onclick="showCheckoutDetail()"><span class="qa-pill-ico">🚪</span><span class="qa-pill-txt">체크아웃</span><span class="qa-pill-sub">5실</span></div>
           <div class="qa-pill" onclick="showSmsDetail()"><span class="qa-pill-ico">📞</span><span class="qa-pill-txt">문자</span></div>
           <div class="qa-pill" onclick="showScheduleDetail()"><span class="qa-pill-ico">📅</span><span class="qa-pill-txt">일정</span><span class="qa-pill-sub" id="schedule-pending-count">4건</span></div>
+        </div>
+        <div class="card sales-toggle-card" style="padding:16px;">
+          <div class="toggle-row">
+            <div><div class="toggle-lbl">숙박<br> 판매</div><div class="toggle-sub" id="sales-overnight-status">판매 중</div></div>
+            <label class="toggle"><input type="checkbox" id="sales-overnight" checked onchange="toggleSales('overnight',this.checked)"><span class="toggle-track"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-lbl">대실<br> 판매</div><div class="toggle-sub" id="sales-dayuse-status">판매 중</div></div>
+            <label class="toggle"><input type="checkbox" id="sales-dayuse" checked onchange="toggleSales('dayuse',this.checked)"><span class="toggle-track"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-lbl">현장<br> 판매</div><div class="toggle-sub" id="sales-onsite-status">판매 중</div></div>
+            <label class="toggle"><input type="checkbox" id="sales-onsite" checked onchange="toggleSales('onsite',this.checked)"><span class="toggle-track"></span></label>
+          </div>
+          <div class="toggle-row">
+            <div><div class="toggle-lbl">온라인<br> 판매</div><div class="toggle-sub" id="sales-online-status">판매 중</div></div>
+            <label class="toggle"><input type="checkbox" id="sales-online" checked onchange="toggleSales('online',this.checked)"><span class="toggle-track"></span></label>
+          </div>
         </div>
       </div>
     </div>
@@ -315,30 +338,9 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
             <div class="cam-wrap"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&auto=format&fit=crop"><div class="cam-ov"></div><div class="cam-live"><div class="live-dot"></div>LIVE</div><div class="cam-name">비상구</div></div>
           </div>
         </div>
-
-        <button class="submit-btn" type="button" onclick="alert('원격지원을 연결합니다.')" style="margin-bottom:12px;">🖥️ 원격지원</button>
-
-        <div class="sec">이벤트 알림</div>
-        <div class="card" style="padding:16px;">
-          <div class="event-item">
-            <div class="ev-top"><div class="ev-tag tag-ai">🤖 AI 카메라</div><div class="ev-time">2분 전</div></div>
-            <div class="ev-title">복도 장시간 배회 감지</div>
-            <div class="ev-desc">2F 복도 · 동일 위치 12분 체류 행동 감지됨</div>
-            <div class="ev-btns"><button class="ev-btn ev-pri">영상 확인</button><button class="ev-btn ev-sec">무시하기</button></div>
-          </div>
-          <div class="event-item">
-            <div class="ev-top"><div class="ev-tag tag-sensor">📡 센서 감지</div><div class="ev-time">5분 전</div></div>
-            <div class="ev-title">객실 움직임 지속 감지</div>
-            <div class="ev-desc">305호 · 심야 비정상 움직임 패턴 감지</div>
-            <div class="ev-btns"><button class="ev-btn ev-pri">상세 보기</button><button class="ev-btn ev-sec">무시하기</button></div>
-          </div>
-          <div class="event-item">
-            <div class="ev-top"><div class="ev-tag tag-env">🌡 환경 센서</div><div class="ev-time">18분 전</div></div>
-            <div class="ev-title">203호 실내 온도 이상</div>
-            <div class="ev-desc">설정 22°C 대비 실내 29°C — 에어컨 미작동 추정</div>
-            <div class="ev-btns"><button class="ev-btn ev-pri">원격 제어</button><button class="ev-btn ev-sec">무시하기</button></div>
-          </div>
-        </div>
+                <div class="sec">이벤트 알림</div>
+        <div class="complete-msg" id="monitor-event-complete">이벤트가 처리되었습니다.</div>
+        <div class="card" style="padding:16px;" id="monitor-events"></div>
         <div style="height:8px;"></div>
       </div>
     </div>
@@ -407,12 +409,12 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
         </div>
 
         <div class="card">
-          <div class="res-item"><div class="res-av">🏨</div><div class="res-info"><div class="res-name">김○○ 고객</div><div class="res-desc">17:00 체크인 · 디럭스 301호 · 1박</div></div><div class="badge b-green">숙박</div></div>
-          <div class="res-item"><div class="res-av">🛎</div><div class="res-info"><div class="res-name">박○○ 고객</div><div class="res-desc">19:00 체크인 · 스탠다드 205호 · 3시간</div></div><div class="badge b-amber">대실</div></div>
-          <div class="res-item"><div class="res-av">🧳</div><div class="res-info"><div class="res-name">이○○ 고객</div><div class="res-desc">20:30 체크인 · 스위트 401호 · 2박</div></div><div class="badge b-green">숙박</div></div>
-          <div class="res-item"><div class="res-av">👤</div><div class="res-info"><div class="res-name">최○○ 고객</div><div class="res-desc">11:00 체크아웃 · 스탠다드 202호</div></div><div class="badge b-red">퇴실</div></div>
-          <div class="res-item"><div class="res-av">🛏</div><div class="res-info"><div class="res-name">정○○ 고객</div><div class="res-desc">14:00 체크인 · 디럭스 303호 · 2박</div></div><div class="badge b-green">숙박</div></div>
-          <div class="res-item"><div class="res-av">👥</div><div class="res-info"><div class="res-name">홍○○ 고객</div><div class="res-desc">16:00 체크인 · 패밀리 408호 · 대실</div></div><div class="badge b-amber">대실</div></div>
+          <div class="res-item"><div class="res-av">🏨</div><div class="res-info"><div class="res-name">김○○ 고객</div><div class="res-desc">17:00 디럭스 301호 · 1박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">🛎</div><div class="res-info"><div class="res-name">박○○ 고객</div><div class="res-desc">19:00 스탠다드 205호 · 3시간</div></div><div class="badge b-amber">대실</div></div>
+          <div class="res-item"><div class="res-av">🧳</div><div class="res-info"><div class="res-name">이○○ 고객</div><div class="res-desc">20:30 스위트 401호 · 2박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">👤</div><div class="res-info"><div class="res-name">최○○ 고객</div><div class="res-desc">11:00 스탠다드 202호</div></div><div class="badge b-red">퇴실</div></div>
+          <div class="res-item"><div class="res-av">🛏</div><div class="res-info"><div class="res-name">정○○ 고객</div><div class="res-desc">14:00 디럭스 303호 · 2박</div></div><div class="badge b-green">숙박</div></div>
+          <div class="res-item"><div class="res-av">👥</div><div class="res-info"><div class="res-name">홍○○ 고객</div><div class="res-desc">16:00 패밀리 408호 · 대실</div></div><div class="badge b-amber">대실</div></div>
         </div>
         <div style="height:8px;"></div>
       </div>
@@ -438,25 +440,6 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
         <div style="height:8px;"></div>
       </div>
     </div>
-
-    <!-- ========== KEY ISSUE ========== -->
-    <div class="page" id="pg-key">
-      <div class="content">
-        <div class="complete-msg" id="key-complete">객실키가 발급되었습니다.</div>
-        <div id="key-view"></div>
-        <div style="height:8px;"></div>
-      </div>
-    </div>
-
-    <!-- ========== CHECKOUT DETAIL ========== -->
-    <div class="page" id="pg-checkout">
-      <div class="content">
-        <div class="complete-msg" id="checkout-complete">체크아웃이 완료되었습니다.</div>
-        <div id="checkout-view"></div>
-        <div style="height:8px;"></div>
-      </div>
-    </div>
-
     <!-- ========== SMS DETAIL ========== -->
     <div class="page" id="pg-sms">
       <div class="content">
@@ -523,6 +506,7 @@ body{background:#050608;display:flex;justify-content:center;align-items:flex-sta
 </div><!-- /phone -->
 
 <script>
+
 /* NAV */
 function navTo(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -532,11 +516,11 @@ function navTo(id){
   document.getElementById('main-scroll').scrollTop=0;
   if(id==='convenience'&&!document.getElementById('conv-view').innerHTML.trim()) renderConvenienceHome();
   if(id==='notify') document.getElementById('notify-complete').classList.remove('show');
+  if(id==='monitor') document.getElementById('monitor-event-complete')?.classList.remove('show');
 }
 /* SETTINGS */
 const pushSettings={
   all:true,
-  checkin:true,
   monitor:true,
   operation:true,
   marketing:false
@@ -594,7 +578,6 @@ function renderMemberInfo(){
 function renderPushSettings(){
   const rows=[
     {key:'all',lbl:'전체 Push 알림',sub:'모든 알림 수신'},
-    {key:'checkin',lbl:'체크인 · 체크아웃',sub:'입퇴실 관련 알림'},
     {key:'monitor',lbl:'관제 이벤트',sub:'AI 카메라, 센서 감지'},
     {key:'operation',lbl:'운영 알림',sub:'청소, 정산, 편의 신청'},
     {key:'marketing',lbl:'마케팅 · 프로모션',sub:'할인, 이벤트 안내'}
@@ -633,36 +616,121 @@ function confirmLogout(){
     alert('로그아웃 되었습니다.');
   }
 }
+/* SALES TOGGLE */
+const salesSettings={overnight:true,dayuse:true,onsite:true,online:true};
+function toggleSales(key,on){
+  salesSettings[key]=on;
+  const inp=document.getElementById('sales-'+key);
+  if(inp) inp.checked=on;
+  const statusEl=document.getElementById('sales-'+key+'-status');
+  if(statusEl) statusEl.textContent=on?'판매 중':'판매 중지';
+}
+function initSalesToggles(){
+  Object.keys(salesSettings).forEach(k=>toggleSales(k,salesSettings[k]));
+}
+initSalesToggles();
 /* NOTIFY */
 let pendingNotifs=[
   {id:1,ico:'🚨',tone:'ni-red',title:'복도 배회 감지 — 2F',sub:'AI 카메라가 동일 위치 장시간 체류를 감지했습니다. 영상을 확인하세요.',time:'2분 전',src:'관제 카메라'},
-  {id:2,ico:'🌡',tone:'ni-amber',title:'203호 온도 이상 (29°C)',sub:'설정 온도 22°C 대비 실내 온도가 높습니다. 에어컨 확인이 필요합니다.',time:'18분 전',src:'환경 센서'},
-  {id:3,ico:'🧹',tone:'ni-blue',title:'청소 요청 3실 대기중',sub:'102호, 207호, 315호가 청소 대기 상태입니다. 하우스키핑에 배정해주세요.',time:'34분 전',src:'운영'}
+  {id:2,ico:'🌡',tone:'ni-amber',title:'203호 온도 이상 (29°C)',sub:'설정 온도 22°C 대비 실내 온도가 높습니다. 에어컨 확인이 필요합니다.',time:'18분 전',src:'환경 센서'}
 ];
 const doneNotifs=[
-  {ico:'✅',tone:'ni-green',title:'301호 체크인 완료',sub:'김○○ 고객 체크인 처리 완료 — 디럭스 301호',time:'1시간 전',src:'프런트'},
-  {ico:'✅',tone:'ni-green',title:'205호 청소 완료',sub:'객실 청소 및 정비 완료 보고 — 스탠다드 205호',time:'2시간 전',src:'하우스키핑'},
-  {ico:'📋',tone:'ni-gray',title:'일일 정산 완료',sub:'5월 11일 일일 정산 완료 — 176만원 확정',time:'3시간 전',src:'자동 정산'}
+  {ico:'📋',tone:'ni-gray',title:'일일 정산 완료',sub:'5월 11일 일일 정산 완료 — 176만원 확정',time:'1시간 전',src:'자동 정산'},
 ];
+let pendingMonitorEvents=[
+  {id:1,homeAlert:true,tag:'🔥 화재 감지',tagCls:'tag-fire',critical:true,time:'방금',title:'화재경보',desc:'로비 화재경보 — 즉시 확인 필요',pri:'긴급 확인',sec:'무시하기'},
+  {id:2,homeAlert:true,tag:'💧 누수 감지',tagCls:'tag-leak',critical:true,time:'3분 전',title:'보일러실 누수 감지',desc:' — 누수 확산 우려',pri:'긴급 확인',sec:'무시하기'},
+  {id:3,homeAlert:true,tag:'🚫 AI 카메라',tagCls:'tag-security',critical:true,time:'1분 전',title:'미성년자 입실 시도 감지',desc:'1F 로비 · 추정 연령 미성년 · 무인 키오스크 앞 3분 체류',pri:'영상 확인',sec:'무시하기'},
+  {id:4,tag:'🤖 AI 카메라',tagCls:'tag-ai',time:'2분 전',title:'복도 장시간 배회 감지',desc:'2F 복도 · 동일 위치 12분 체류 행동 감지됨',pri:'영상 확인',sec:'무시하기'},
+  {id:5,tag:'🌡 환경 센서',tagCls:'tag-env',time:'18분 전',title:'203호 실내 온도 이상',desc:'설정 22°C 대비 실내 29°C — 에어컨 미작동 추정',pri:'상세 보기',sec:'무시하기'}
+];
+const doneMonitorEvents=[];
 function renderNotifItem(n,showActions){
-  return `<div class="notif-item">
+  const action=n.isMonitor
+    ?`<div class="ni-actions"><button class="ni-btn ni-btn-pri" type="button" onclick="processMonitorEvent(${n.monitorId})">처리</button><button class="ni-btn ni-btn-sec" type="button" onclick="navTo('monitor')">관제실</button></div>`
+    :(showActions?`<div class="ni-actions"><button class="ni-btn ni-btn-pri" type="button" onclick="processNotification(${n.id})">처리</button></div>`:'');
+  return `<div class="notif-item${n.critical?' home-alert-critical':''}">
     <div class="ni-ico ${n.tone}">${n.ico}</div>
     <div class="ni-body">
       <div class="ni-title">${n.title}</div>
       <div class="ni-sub">${n.sub}</div>
       <div class="ni-meta"><div class="ni-time">${n.time}</div><div class="ni-src">${n.src}</div></div>
-      ${showActions?`<div class="ni-actions"><button class="ni-btn ni-btn-pri" type="button" onclick="processNotification(${n.id})">처리</button></div>`:''}
+      ${action}
     </div>
     ${showActions?'<div class="ni-dot"></div>':''}
   </div>`;
 }
+function monitorEventToNotif(e){
+  return {
+    monitorId:e.id,
+    isMonitor:true,
+    critical:!!e.critical,
+    ico:e.tagCls==='tag-fire'?'🔥':e.tagCls==='tag-leak'?'💧':'🚫',
+    tone:e.tagCls==='tag-fire'?'ni-red':e.tagCls==='tag-leak'?'ni-blue':'ni-amber',
+    title:e.title,
+    sub:e.desc,
+    time:e.time,
+    src:'관제실'
+  };
+}
+function renderPriorityList(){
+  const meta=[
+    {id:1,cls:'urgent',ico:'red'},
+    {id:2,cls:'urgent',ico:'red'},
+    {id:3,cls:'warn',ico:'amber'}
+  ];
+  const el=document.getElementById('priority-list');
+  const cnt=document.getElementById('priority-count');
+  if(!el) return;
+  const alerts=getHomeAlertEvents();
+  const total=alerts.length+pendingNotifs.length;
+  if(cnt) cnt.textContent=total+'건';
+  if(!alerts.length&&!pendingNotifs.length){
+    el.innerHTML='<div class="notify-empty" style="padding:20px;">처리할 긴급 항목이 없습니다 ✓</div>';
+    return;
+  }
+  const items=[
+    ...alerts.map(e=>({...monitorEventToNotif(e),priorityId:e.id,isMonitor:true})),
+    ...pendingNotifs.map(n=>({...n,isMonitor:false}))
+  ].slice(0,3);
+  el.innerHTML=items.map((n,i)=>{
+    const m=n.isMonitor?(meta.find(x=>x.id===n.monitorId)||meta[2]):{cls:'info',ico:'blue'};
+    return `<div class="priority-item ${m.cls}" data-idx="${i}">
+      <div class="pri-ico ${m.ico}">${n.ico}</div>
+      <div class="pri-body"><div class="pri-title">${n.title}</div><div class="pri-sub">${n.sub}</div></div>
+      <div class="pri-arrow">›</div>
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.priority-item').forEach(item=>{
+    item.onclick=()=>{
+      const idx=parseInt(item.dataset.idx,10);
+      const n=items[idx];
+      if(n.isMonitor) processMonitorEvent(n.monitorId);
+      else navTo('notify');
+    };
+  });
+}
+
+function getHomeAlertEvents(){
+  return pendingMonitorEvents.filter(e=>e.homeAlert);
+}
+function renderHomeAlerts(){
+  const el=document.getElementById('home-alert-list');
+  const sec=document.getElementById('home-alert-sec');
+  if(!el) return;
+  const alerts=getHomeAlertEvents();
+  if(sec) sec.style.display=alerts.length?'':'none';
+  el.style.display=alerts.length?'':'none';
+  if(!alerts.length) return;
+  el.innerHTML=alerts.map(e=>renderNotifItem(monitorEventToNotif(e),true)).join('');
+}
 function updateNotifyCount(){
-  const count=pendingNotifs.length;
+  const count=pendingNotifs.length+getHomeAlertEvents().length;
   document.getElementById('notify-pending-sec').textContent='미처리 알림'+(count?' ('+count+')':'');
   const homeEl=document.getElementById('home-notify-count');
   if(homeEl){
     homeEl.textContent=count;
-    /* kpi chip uses alert styling */
+    homeEl.style.color=count?'var(--red)':'var(--text1)';
   }
   const badge=document.getElementById('nav-notify-badge');
   if(badge){
@@ -676,9 +744,12 @@ function renderNotifications(){
   const pendingEl=document.getElementById('notify-pending');
   const doneEl=document.getElementById('notify-done');
   if(!pendingEl||!doneEl) return;
-  if(pendingNotifs.length){
+  const criticalAlerts=getHomeAlertEvents().map(monitorEventToNotif);
+  const totalPending=criticalAlerts.length+pendingNotifs.length;
+  if(totalPending){
     pendingEl.innerHTML=`
-      <button class="submit-btn" type="button" onclick="processAllNotifications()" style="margin-bottom:14px;">✓ 일괄 처리 (${pendingNotifs.length}건)</button>
+      <button class="submit-btn" type="button" onclick="processAllHomeAndNotifications()" style="margin-bottom:14px;">✓ 일괄 처리 (${totalPending}건)</button>
+      ${criticalAlerts.map(n=>renderNotifItem(n,true)).join('')}
       ${pendingNotifs.map(n=>renderNotifItem(n,true)).join('')}
     `;
   }else{
@@ -686,6 +757,12 @@ function renderNotifications(){
   }
   doneEl.innerHTML=doneNotifs.map(n=>renderNotifItem(n,false)).join('');
   updateNotifyCount();
+  renderHomeAlerts();
+  if(typeof renderPriorityList==='function') renderPriorityList();
+}
+function processAllHomeAndNotifications(){
+  getHomeAlertEvents().slice().forEach(e=>processMonitorEvent(e.id,true));
+  processAllNotifications(true);
 }
 function processNotification(id){
   const idx=pendingNotifs.findIndex(n=>n.id===id);
@@ -695,59 +772,64 @@ function processNotification(id){
   doneNotifs.unshift(item);
   document.getElementById('notify-complete').classList.add('show');
   renderNotifications();
-  renderPriorityList();
+  if(typeof renderPriorityList==='function') renderPriorityList();
 }
-function processAllNotifications(){
-  if(!pendingNotifs.length) return;
-  doneNotifs.unshift(...pendingNotifs.map(n=>({...n,ico:'✅',tone:'ni-green',time:'방금',src:'처리완료'})));
-  pendingNotifs=[];
+function processAllNotifications(skipMonitor){
+  if(!skipMonitor){
+    getHomeAlertEvents().slice().forEach(e=>processMonitorEvent(e.id,true));
+  }
+  if(pendingNotifs.length){
+    doneNotifs.unshift(...pendingNotifs.map(n=>({...n,ico:'✅',tone:'ni-green',time:'방금',src:'처리완료'})));
+    pendingNotifs=[];
+  }
   document.getElementById('notify-complete').classList.add('show');
   renderNotifications();
-  renderPriorityList();
+  if(typeof renderPriorityList==='function') renderPriorityList();
 }
-/* BOTTOM SHEET */
-function openSheet(html){
-  const el=document.getElementById('sheet-content');
-  el.innerHTML='<div class="sheet-handle"></div>'+html;
-  document.getElementById('sheet-overlay').classList.add('show');
+/* MONITOR EVENTS */
+function renderMonitorEventItem(e,showActions){
+  return `<div class="event-item${e.critical?' ev-critical':''}">
+    <div class="ev-top"><div class="ev-tag ${e.tagCls}">${e.tag}</div><div class="ev-time">${e.time}</div></div>
+    <div class="ev-title">${e.title}</div>
+    <div class="ev-desc">${e.desc}</div>
+    ${showActions?`<div class="ev-btns"><button class="ev-btn ev-pri" type="button" onclick="processMonitorEvent(${e.id})">${e.pri}</button><button class="ev-btn ev-sec" type="button" onclick="dismissMonitorEvent(${e.id})">${e.sec}</button></div>`:''}
+  </div>`;
 }
-function closeSheet(e){
-  if(e&&e.target&&e.target!==document.getElementById('sheet-overlay')) return;
-  document.getElementById('sheet-overlay').classList.remove('show');
-}
-function renderPriorityList(){
-  const meta=[
-    {id:1,cls:'urgent',ico:'red',go:()=>navTo('monitor')},
-    {id:2,cls:'warn',ico:'amber',go:()=>navTo('monitor')},
-    {id:3,cls:'info',ico:'blue',go:()=>navTo('notify')}
-  ];
-  const el=document.getElementById('priority-list');
-  const cnt=document.getElementById('priority-count');
+function renderMonitorEvents(){
+  const el=document.getElementById('monitor-events');
   if(!el) return;
-  if(!pendingNotifs.length){
-    el.innerHTML='<div class="notify-empty" style="padding:20px;">처리할 긴급 항목이 없습니다 ✓</div>';
-    if(cnt) cnt.textContent='0건';
-    return;
+  if(pendingMonitorEvents.length){
+    el.innerHTML=`
+      <button class="submit-btn" type="button" onclick="processAllMonitorEvents()" style="margin-bottom:14px;">✓ 일괄 처리 (${pendingMonitorEvents.length}건)</button>
+      ${pendingMonitorEvents.map(e=>renderMonitorEventItem(e,true)).join('')}
+    `;
+  }else{
+    el.innerHTML='<div class="notify-empty">미처리 이벤트가 없습니다.</div>';
   }
-  if(cnt) cnt.textContent=pendingNotifs.length+'건';
-  el.innerHTML=pendingNotifs.slice(0,3).map(n=>{
-    const m=meta.find(x=>x.id===n.id)||meta[2];
-    return `<div class="priority-item ${m.cls}" data-id="${n.id}">
-      <div class="pri-ico ${m.ico}">${n.ico}</div>
-      <div class="pri-body"><div class="pri-title">${n.title}</div><div class="pri-sub">${n.sub}</div></div>
-      <div class="pri-arrow">›</div>
-    </div>`;
-  }).join('');
-  el.querySelectorAll('.priority-item').forEach(item=>{
-    item.onclick=()=>{
-      const id=parseInt(item.dataset.id,10);
-      const m=meta.find(x=>x.id===id)||meta[2];
-      m.go();
-    };
-  });
+}
+function processMonitorEvent(id,silent){
+  const idx=pendingMonitorEvents.findIndex(e=>e.id===id);
+  if(idx===-1) return;
+  const item={...pendingMonitorEvents[idx],time:'방금',tag:'✅ 처리완료',tagCls:'tag-env',critical:false,homeAlert:false};
+  pendingMonitorEvents.splice(idx,1);
+  doneMonitorEvents.unshift(item);
+  if(!silent) document.getElementById('monitor-event-complete').classList.add('show');
+  renderMonitorEvents();
+  renderNotifications();
+}
+function dismissMonitorEvent(id){
+  processMonitorEvent(id);
+}
+function processAllMonitorEvents(){
+  if(!pendingMonitorEvents.length) return;
+  doneMonitorEvents.unshift(...pendingMonitorEvents.map(e=>({...e,time:'방금',tag:'✅ 처리완료',tagCls:'tag-env',critical:false,homeAlert:false})));
+  pendingMonitorEvents=[];
+  document.getElementById('monitor-event-complete').classList.add('show');
+  renderMonitorEvents();
+  renderNotifications();
 }
 renderNotifications();
-renderPriorityList();
+renderMonitorEvents();
 /* TAB */
 function switchTab(el){
   el.closest('.tab-bar').querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
@@ -897,20 +979,14 @@ function submitConvenienceRequest(){
 }
 /* ROOM GRID */
 const rooms=[
-  {n:'101',s:'oc',guest:'김민수',checkin:'05/11 14:00',type:'숙박',nights:1},{n:'102',s:'cl'},{n:'103',s:'oc',guest:'박지영',checkin:'05/10 18:00',type:'숙박',nights:2},{n:'104',s:'va'},{n:'105',s:'oc',guest:'이준호',checkin:'05/11 16:00',type:'대실',nights:0},
-  {n:'201',s:'oc',guest:'정수현',checkin:'05/11 19:00',type:'숙박',nights:1},{n:'202',s:'wt'},{n:'203',s:'oc',guest:'최영희',checkin:'05/10 20:00',type:'숙박',nights:2},{n:'204',s:'va'},{n:'205',s:'oc',guest:'강태우',checkin:'05/12 07:00',type:'대실',nights:0},
-  {n:'206',s:'cl'},{n:'207',s:'wt'},{n:'208',s:'oc',guest:'한소희',checkin:'05/11 15:00',type:'숙박',nights:1},{n:'209',s:'oc',guest:'윤서준',checkin:'05/11 17:30',type:'숙박',nights:3},{n:'210',s:'va'},
-  {n:'301',s:'oc',guest:'김○○',checkin:'05/11 17:00',type:'숙박',nights:1,upcoming:true},{n:'302',s:'oc',guest:'오민재',checkin:'05/10 14:00',type:'숙박',nights:2},{n:'303',s:'cl'},{n:'304',s:'oc',guest:'송해린',checkin:'05/11 21:00',type:'숙박',nights:1},{n:'305',s:'oc',guest:'임동현',checkin:'05/11 16:30',type:'대실',nights:0},
+  {n:'101',s:'oc',guest:'김민수',checkin:'05/11 14:00',type:'숙박',nights:1},{n:'102',s:'va'},{n:'103',s:'oc',guest:'박지영',checkin:'05/10 18:00',type:'숙박',nights:2},{n:'104',s:'va'},{n:'105',s:'oc',guest:'이준호',checkin:'05/11 16:00',type:'대실',nights:0},
+  {n:'201',s:'oc',guest:'정수현',checkin:'05/11 19:00',type:'숙박',nights:1},{n:'202',s:'va'},{n:'203',s:'oc',guest:'최영희',checkin:'05/10 20:00',type:'숙박',nights:2},{n:'204',s:'va'},{n:'205',s:'oc',guest:'강태우',checkin:'05/12 07:00',type:'대실',nights:0},
+  {n:'206',s:'va'},{n:'207',s:'va'},{n:'208',s:'oc',guest:'한소희',checkin:'05/11 15:00',type:'숙박',nights:1},{n:'209',s:'oc',guest:'윤서준',checkin:'05/11 17:30',type:'숙박',nights:3},{n:'210',s:'va'},
+  {n:'301',s:'oc',guest:'김○○',checkin:'05/11 17:00',type:'숙박',nights:1,upcoming:true},{n:'302',s:'oc',guest:'오민재',checkin:'05/10 14:00',type:'숙박',nights:2},{n:'303',s:'va'},{n:'304',s:'oc',guest:'송해린',checkin:'05/11 21:00',type:'숙박',nights:1},{n:'305',s:'oc',guest:'임동현',checkin:'05/11 16:30',type:'대실',nights:0},
   {n:'401',s:'va'},{n:'402',s:'oc',guest:'노은채',checkin:'05/11 13:00',type:'숙박',nights:1},{n:'403',s:'oc',guest:'배준서',checkin:'05/11 18:00',type:'숙박',nights:2},{n:'404',s:'oc',guest:'고민지',checkin:'05/10 19:00',type:'숙박',nights:3},{n:'405',s:'oc',guest:'서지훈',checkin:'05/11 20:00',type:'숙박',nights:1}
 ];
-const checkinToday=[
-  {room:'301',guest:'김○○',time:'오후 5:00',roomType:'디럭스룸',type:'숙박',nights:1,phone:'010-1234-5678',keyIssued:false},
-  {room:'205',guest:'박○○',time:'오후 7:00',roomType:'스탠다드룸',type:'대실',hours:3,phone:'010-2345-6789',keyIssued:false},
-  {room:'401',guest:'이○○',time:'오후 8:30',roomType:'스위트룸',type:'숙박',nights:2,phone:'010-3456-7890',keyIssued:false},
-  {room:'202',guest:'최○○',time:'오전 11:00 체크아웃',roomType:'스탠다드',type:'퇴실',phone:'010-4567-8901',keyIssued:true}
-];
-const sKo={oc:'투숙',va:'공실',cl:'청소',wt:'대기'};
-const sCls={oc:'rm-oc',va:'rm-va',cl:'rm-cl',wt:'rm-wt'};
+const sKo={oc:'투숙',va:'공실'};
+const sCls={oc:'rm-oc',va:'rm-va'};
 const rg=document.getElementById('room-grid');
 rooms.forEach((r,i)=>{
   const d=document.createElement('div');
@@ -925,156 +1001,28 @@ rooms.forEach((r,i)=>{
 function showRoomDetail(roomIndex){
   const r=rooms[roomIndex];
   if(!r.guest) return;
-  const matchingCheckin=checkinToday.find(c=>c.room===r.n);
-  const isUpcoming=matchingCheckin!==undefined;
-  const detail=isUpcoming?matchingCheckin:r;
-  openSheet(`
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  modal.onclick=(e)=>{if(e.target===modal)modal.remove();};
+  modal.innerHTML=`
+    <div class="card" style="max-width:350px;width:100%;margin:0;animation:slideUp 0.2s;box-shadow:0 20px 40px rgba(0,0,0,0.3);" onclick="event.stopPropagation();">
       <div class="card-head" style="margin-bottom:16px;">
         <div class="card-title">${r.n}호 상세</div>
-        <div style="font-size:20px;cursor:pointer;color:var(--text3);" onclick="closeSheet()">✕</div>
+        <div style="font-size:20px;cursor:pointer;" onclick="this.closest('[style*=fixed]').remove()">✕</div>
       </div>
       <div class="detail-summary">
         <div class="detail-mini"><div class="dm-lbl">객실</div><div class="dm-val">${r.n}호</div></div>
-        <div class="detail-mini"><div class="dm-lbl">고객명</div><div class="dm-val">${detail.guest||r.guest}</div></div>
-        <div class="detail-mini"><div class="dm-lbl">체크인</div><div class="dm-val">${isUpcoming?detail.time:r.checkin}</div></div>
-        <div class="detail-mini"><div class="dm-lbl">이용형태</div><div class="dm-val">${detail.type||r.type}</div></div>
-        ${detail.phone?`<div class="detail-mini" style="grid-column:1/-1;"><div class="dm-lbl">연락처</div><div class="dm-val">${detail.phone}</div></div>`:''}
+        <div class="detail-mini"><div class="dm-lbl">고객명</div><div class="dm-val">${r.guest}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">입실</div><div class="dm-val">${r.checkin}</div></div>
+        <div class="detail-mini"><div class="dm-lbl">이용형태</div><div class="dm-val">${r.type}</div></div>
       </div>
-      ${isUpcoming?`
-        <div style="margin-top:14px;">
-          <div class="process-note" style="margin-bottom:10px;">
-            ${detail.keyIssued?'🔑 객실키가 이미 발급되었습니다.':'🔑 객실키를 발급할 수 있습니다.'}
-          </div>
-          <button class="submit-btn" onclick="issueRoomKey('${detail.room}')" ${detail.keyIssued?'disabled style="opacity:0.5;cursor:not-allowed;"':''}>
-            ${detail.keyIssued?'✓ 객실키 발급완료':'🔑 객실키 발급'}
-          </button>
-        </div>
-      `:`
-        <div class="process-note" style="margin-top:14px;">
-          현재 투숙중입니다. ${r.nights>0?r.nights+'박 예약':r.type+' 이용'}
-        </div>
-      `}
-  `);
-}
-function getKeyInfo(roomNum){
-  const checkin=checkinToday.find(c=>c.room===roomNum);
-  const room=rooms.find(r=>r.n===roomNum);
-  if(checkin&&checkin.type!=='퇴실'){
-    return {eligible:true,issued:checkin.keyIssued,guest:checkin.guest,status:'체크인 예정',type:checkin.type,time:checkin.time};
-  }
-  if(room&&room.s==='oc'&&room.guest){
-    const pending=checkinToday.find(c=>c.room===roomNum&&!c.keyIssued);
-    return {eligible:true,issued:!pending,guest:room.guest,status:'투숙중',type:room.type,time:room.checkin};
-  }
-  if(room){
-    return {eligible:false,issued:false,guest:null,status:sKo[room.s],type:null,time:null};
-  }
-  return {eligible:false,issued:false,guest:null,status:'-',type:null,time:null};
-}
-function updateKeyPendingCount(){
-  const pending=rooms.filter(r=>{const k=getKeyInfo(r.n);return k.eligible&&!k.issued;}).length;
-  const el=document.getElementById('key-pending-count');
-  if(el) el.textContent=pending>0?pending+'실 미발급':'전체 발급완료';
-}
-function issueRoomKey(room){
-  const item=checkinToday.find(c=>c.room===room);
-  if(item) item.keyIssued=true;
-  else if(!checkinToday.find(c=>c.room===room)){
-    const roomData=rooms.find(r=>r.n===room);
-    checkinToday.push({room,guest:roomData?.guest||'',time:'방금',roomType:'객실',type:roomData?.type||'숙박',nights:1,phone:'',keyIssued:true});
-  }
-  closeSheet();
-  if(document.getElementById('pg-key').classList.contains('active')){
-    document.getElementById('key-complete').classList.add('show');
-    renderKeyIssueList();
-  }else{
-    alert(`${room}호 객실키가 발급되었습니다.`);
-  }
-  renderCheckinList();
-  updateKeyPendingCount();
-}
-function showKeyIssueDetail(){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('pg-key').classList.add('active');
-  renderKeyIssueList();
-  document.getElementById('main-scroll').scrollTop=0;
-}
-function getKeyCellInfo(roomNum){
-  const k=getKeyInfo(roomNum);
-  if(!k.eligible) return {cls:'rm-key-na',label:'-',clickable:false};
-  if(k.issued) return {cls:'rm-key-yes',label:'있음',clickable:false};
-  return {cls:'rm-key-no',label:'없음',clickable:true};
-}
-function showKeyRoomModal(roomNum){
-  const k=getKeyInfo(roomNum);
-  if(!k.eligible||k.issued) return;
-  openSheet(`
-      <div class="card-head" style="margin-bottom:16px;">
-        <div class="card-title">${roomNum}호 키 발급</div>
-        <div style="font-size:20px;cursor:pointer;color:var(--text3);" onclick="closeSheet()">✕</div>
-      </div>
-      <div class="process-note" style="margin-bottom:14px;">객실키가 아직 발급되지 않았습니다.</div>
-      <button class="submit-btn" onclick="issueRoomKey('${roomNum}')" type="button">🔑 키 발급</button>
-  `);
-}
-function renderKeyIssueList(){
-  document.getElementById('key-complete').classList.remove('show');
-  const pending=rooms.filter(r=>{const k=getKeyInfo(r.n);return k.eligible&&!k.issued;});
-  const issued=rooms.filter(r=>{const k=getKeyInfo(r.n);return k.eligible&&k.issued;});
-  document.getElementById('key-view').innerHTML=`
-    <div class="sec">키 발급 현황</div>
-    <div class="detail-summary" style="margin-bottom:12px;">
-      <div class="detail-mini"><div class="dm-lbl">키 없음</div><div class="dm-val" style="color:var(--amber);">${pending.length}실</div></div>
-      <div class="detail-mini"><div class="dm-lbl">키 있음</div><div class="dm-val" style="color:var(--green);">${issued.length}실</div></div>
-      <div class="detail-mini"><div class="dm-lbl">해당없음</div><div class="dm-val">${rooms.length-issued.length-pending.length}실</div></div>
-      <div class="detail-mini"><div class="dm-lbl">전체 호실</div><div class="dm-val">${rooms.length}실</div></div>
-    </div>
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title">호실 현황</div>
-      </div>
-      <div class="room-grid">
-        ${rooms.map(r=>{
-          const c=getKeyCellInfo(r.n);
-          const click=c.clickable?`onclick="showKeyRoomModal('${r.n}')" style="cursor:pointer;"`:'';
-          return `<div class="room-cell ${c.cls}" ${click}>
-            <span class="r-st">${c.label}</span>
-            <span class="r-num">${r.n}</span>
-          </div>`;
-        }).join('')}
-      </div>
-      <div class="room-legend">
-        <div class="leg"><div class="leg-dot" style="background:#10b981;"></div>키 있음</div>
-        <div class="leg"><div class="leg-dot" style="background:#f59e0b;"></div>키 없음</div>
-        <div class="leg"><div class="leg-dot" style="background:#b0b7c8;"></div>해당없음</div>
+      <div class="process-note" style="margin-top:14px;">
+        현재 투숙중입니다. ${r.nights>0?r.nights+'박 예약':r.type+' 이용'}
       </div>
     </div>
-    <div class="sec"><span class="back-link" onclick="navTo('home')">← 홈으로</span></div>
   `;
-  updateKeyPendingCount();
+  document.body.appendChild(modal);
 }
-function renderCheckinList(){
-  const list=document.getElementById('checkin-list');
-  list.innerHTML=checkinToday.map(c=>{
-    const icon=c.type==='숙박'?'🏨':c.type==='대실'?'🛎':c.type==='퇴실'?'👤':'🧳';
-    const badge=c.type==='숙박'?'b-green':c.type==='대실'?'b-amber':'b-red';
-    const desc=c.type==='퇴실'?c.time+' · '+c.roomType+' '+c.room+'호':c.time+' · '+c.roomType+' '+c.room+'호 · '+(c.nights?c.nights+'박':c.hours+'시간');     
-    return `<div class="res-item" onclick="showCheckinDetail('${c.room}')">
-      <div class="res-av">${icon}</div>
-      <div class="res-info">
-        <div class="res-name">${c.guest} 고객</div>
-        <div class="res-desc">${desc}</div>
-      </div>
-      <div class="badge ${badge}">${c.type}</div>
-    </div>`;
-  }).join('');
-}
-function showCheckinDetail(room){
-  const roomData=rooms.find(r=>r.n===room);
-  if(roomData) showRoomDetail(rooms.indexOf(roomData));
-}
-renderCheckinList();
-updateKeyPendingCount();
 /* SALES CHART */
 const sd=[
   {d:'05/12',l:'오늘',st:2,sh:3,amt:128,t:true},
@@ -1117,87 +1065,19 @@ for(let d=1;d<=31;d++){
 const ef=7-((startDay+31)%7);
 if(ef<7){for(let i=1;i<=ef;i++) cg.innerHTML+=`<div class="cd other">${i}</div>`;}
 
-/* CHECKOUT DETAIL */
-const checkoutRooms=[
-  {room:'202',guest:'최○○',checkin:'05/11 14:00',checkout:'05/12 11:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
-  {room:'305',guest:'김○○',checkin:'05/11 17:00',checkout:'05/12 11:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
-  {room:'401',guest:'이○○',checkin:'05/11 20:30',checkout:'05/12 12:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
-  {room:'205',guest:'박○○',checkin:'05/12 07:00',checkout:'05/12 10:00',type:'대실',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'},
-  {room:'303',guest:'정○○',checkin:'05/11 14:00',checkout:'05/12 14:00',type:'숙박',status:'pending',payment:'완료',cleaning:'대기',deposit:'확인완료'}
-];
-function showCheckoutDetail(){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('pg-checkout').classList.add('active');
-  renderCheckoutList();
-  document.getElementById('main-scroll').scrollTop=0;
-}
-function renderCheckoutList(){
-  document.getElementById('checkout-complete').classList.remove('show');
-  document.getElementById('checkout-view').innerHTML=`
-    <div class="sec">체크아웃 예정 (${checkoutRooms.length}실)</div>
-    <div class="card" style="padding:16px;">
-      ${checkoutRooms.map((r,i)=>`<div class="hist-item" onclick="renderCheckoutForm(${i})">
-        <div class="hist-top">
-          <div class="hist-title">${r.room}호 · ${r.guest} 고객</div>
-          <div class="badge ${r.status==='done'?'b-green':'b-amber'}">${r.status==='done'?'완료':'대기'}</div>
-        </div>
-        <div class="hist-meta">${r.checkin} 체크인 → ${r.checkout} 체크아웃<br>${r.type} · 결제 ${r.payment} · 청소 ${r.cleaning}</div>
-      </div>`).join('')}
-    </div>
-    <div class="sec"><span class="back-link" onclick="navTo('home')">← 홈으로</span></div>
-  `;
-}
-function renderCheckoutForm(i){
-  const r=checkoutRooms[i];
-  document.getElementById('checkout-view').innerHTML=`
-    <div class="sec"><span class="back-link" onclick="renderCheckoutList()">← 체크아웃 목록</span></div>
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title">${r.room}호 체크아웃 처리</div>
-      </div>
-      <div class="detail-summary">
-        <div class="detail-mini"><div class="dm-lbl">객실</div><div class="dm-val">${r.room}호</div></div>
-        <div class="detail-mini"><div class="dm-lbl">고객명</div><div class="dm-val">${r.guest}</div></div>
-        <div class="detail-mini"><div class="dm-lbl">체크인</div><div class="dm-val">${r.checkin}</div></div>
-        <div class="detail-mini"><div class="dm-lbl">체크아웃</div><div class="dm-val">${r.checkout}</div></div>
-        <div class="detail-mini"><div class="dm-lbl">이용 형태</div><div class="dm-val">${r.type}</div></div>
-        <div class="detail-mini"><div class="dm-lbl">결제 상태</div><div class="dm-val">${r.payment}</div></div>
-      </div>
-      <div class="form-grid">
-        <div class="field"><label>특이사항</label>
-          <textarea class="textarea" placeholder="파손, 분실, 추가 요금 등 특이사항을 입력하세요."></textarea>
-        </div>
-        <div class="field"><label>사진 증거</label>
-          <div class="photo-box">객실 상태 사진을 첨부하세요.</div>
-        </div>
-        <button class="submit-btn" onclick="submitCheckout(${i})" type="button">체크아웃 완료</button>
-      </div>
-    </div>
-  `;
-  document.getElementById('main-scroll').scrollTop=0;
-}
-function submitCheckout(i){
-  checkoutRooms[i].status='done';
-  checkoutRooms[i].cleaning='청소대기';
-  document.getElementById('checkout-complete').classList.add('show');
-  renderCheckoutList();
-  document.getElementById('main-scroll').scrollTop=0;
-}
-
+/* SMS DETAIL */
 /* SMS DETAIL */
 const smsTemplates=[
-  {id:'checkin',title:'체크인 안내',desc:'체크인 시간, 객실번호, 와이파이 정보',content:'[H STAY 강남점] 안녕하세요 고객님, 오늘 {{time}} 체크인 예정이십니다. 객실: {{room}}호, 와이파이: HSTAY_GN / 비밀번호: hstay2026'},
-  {id:'checkout',title:'체크아웃 안내',desc:'체크아웃 시간, 퇴실 절차 안내',content:'[H STAY 강남점] {{name}} 고객님, 체크아웃 시간은 {{time}}입니다. 퇴실 시 카드키를 프런트에 반납해주시고, 미니바 이용 내역을 확인해주세요.'},
+  {id:'welcome',title:'입실 안내',desc:'입실 시간, 객실번호, 와이파이 정보',content:'[H STAY 강남점] 안녕하세요 고객님, 오늘 {{time}} 입실 예정이십니다. 객실: {{room}}호, 와이파이: HSTAY_GN / 비밀번호: hstay2026'},
   {id:'thankyou',title:'감사 인사',desc:'퇴실 후 감사 메시지 및 리뷰 요청',content:'[H STAY 강남점] {{name}} 고객님, 저희 호텔을 이용해주셔서 감사합니다. 다음에도 더 나은 서비스로 모시겠습니다. 리뷰를 남겨주시면 감사하겠습니다.'},
   {id:'promo',title:'프로모션 안내',desc:'할인, 이벤트, 특별 프로모션',content:'[H STAY 강남점] 특별 할인 이벤트! 평일 숙박 30% 할인 + 조식 무료 제공. 예약 문의: 02-1234-5678'},
   {id:'custom',title:'직접 작성',desc:'원하는 내용을 직접 입력',content:''}
 ];
 const smsRecipients=[
-  {name:'김○○',phone:'010-1234-5678',room:'301',checkin:'17:00',checkout:'11:00',status:'체크인 예정'},
-  {name:'박○○',phone:'010-2345-6789',room:'205',checkin:'19:00',checkout:'22:00',status:'대실 예정'},
-  {name:'이○○',phone:'010-3456-7890',room:'401',checkin:'20:30',checkout:'12:00',status:'체크인 예정'},
-  {name:'최○○',phone:'010-4567-8901',room:'202',checkin:'',checkout:'11:00',status:'체크아웃 예정'},
-  {name:'정○○',phone:'010-5678-9012',room:'303',checkin:'14:00',checkout:'14:00',status:'투숙중'}
+  {name:'김○○',phone:'010-1234-5678',room:'301',time:'17:00',status:'예약'},
+  {name:'박○○',phone:'010-2345-6789',room:'205',time:'19:00',status:'대실 예약'},
+  {name:'이○○',phone:'010-3456-7890',room:'401',time:'20:30',status:'예약'},
+  {name:'정○○',phone:'010-5678-9012',room:'303',time:'14:00',status:'투숙중'}
 ];
 function showSmsDetail(){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
@@ -1219,7 +1099,7 @@ function renderSmsTemplateList(){
     <div class="sec">발송 이력</div>
     <div class="card" style="padding:16px;">
       <div class="hist-item">
-        <div class="hist-top"><div class="hist-title">체크인 안내 문자</div><div class="badge b-green">발송완료</div></div>
+        <div class="hist-top"><div class="hist-title">입실 안내 문자</div><div class="badge b-green">발송완료</div></div>
         <div class="hist-meta">05/12 09:20 · 12명 발송 성공</div>
       </div>
       <div class="hist-item">
@@ -1240,8 +1120,7 @@ function renderSmsForm(i){
         <div class="field"><label>수신 대상 선택</label>
           <select class="select" id="sms-target">
             <option value="all">전체 고객 (${smsRecipients.length}명)</option>
-            <option value="checkin">체크인 예정 고객</option>
-            <option value="checkout">체크아웃 예정 고객</option>
+            <option value="reserved">예약 고객</option>
             <option value="staying">투숙중 고객</option>
             <option value="custom">개별 선택</option>
           </select>
@@ -1264,7 +1143,7 @@ function renderSmsForm(i){
           <div class="hist-title">${r.name} · ${r.phone}</div>
           <div class="badge b-blue">${r.status}</div>
         </div>
-        <div class="hist-meta">${r.room}호${r.checkin?' · 체크인 '+r.checkin:''}${r.checkout?' · 체크아웃 '+r.checkout:''}</div>
+        <div class="hist-meta">${r.room}호${r.time?' · '+r.time:''}</div>
       </div>`).join('')}
     </div>
     <div class="card">
@@ -1295,8 +1174,8 @@ function renderDailyReport(){
       <div class="detail-summary">
         <div class="detail-mini"><div class="dm-lbl">총 매출</div><div class="dm-val">128만원</div></div>
         <div class="detail-mini"><div class="dm-lbl">투숙객</div><div class="dm-val">18명</div></div>
-        <div class="detail-mini"><div class="dm-lbl">체크인</div><div class="dm-val">12건</div></div>
-        <div class="detail-mini"><div class="dm-lbl">체크아웃</div><div class="dm-val">5건</div></div>
+        <div class="detail-mini"><div class="dm-lbl">신규 예약</div><div class="dm-val">12건</div></div>
+        <div class="detail-mini"><div class="dm-lbl">대실 예약</div><div class="dm-val">7건</div></div>
         <div class="detail-mini"><div class="dm-lbl">가동률</div><div class="dm-val">72%</div></div>
         <div class="detail-mini"><div class="dm-lbl">평균 객단가</div><div class="dm-val">7.1만원</div></div>
       </div>
@@ -1336,15 +1215,7 @@ function renderDailyReport(){
         </div>
         <div class="stat-card" style="text-align:center;">
           <div class="stat-lbl">공실</div>
-          <div class="stat-val" style="font-size:26px;color:var(--green);">4</div>
-        </div>
-        <div class="stat-card" style="text-align:center;">
-          <div class="stat-lbl">청소대기</div>
-          <div class="stat-val" style="font-size:26px;color:var(--amber);">2</div>
-        </div>
-        <div class="stat-card" style="text-align:center;">
-          <div class="stat-lbl">청소중</div>
-          <div class="stat-val" style="font-size:26px;color:var(--red);">1</div>
+          <div class="stat-val" style="font-size:26px;color:var(--green);">7</div>
         </div>
       </div>
     </div>
@@ -1368,7 +1239,7 @@ let ownerSchedule=[
   {id:1,date:'2026-05-12',time:'09:00',title:'일일 정산 확인',cat:'정산',cls:'b-blue',sub:'전일 매출 176만원 확정',done:false},
   {id:2,date:'2026-05-12',time:'11:00',title:'프런트 교대',cat:'근무',cls:'b-green',sub:'김○○ → 박○○ 교대',done:false},
   {id:3,date:'2026-05-12',time:'14:00',title:'2F 복도 시설 점검',cat:'점검',cls:'b-amber',sub:'조명, CCTV, 비상구 확인',done:false},
-  {id:4,date:'2026-05-12',time:'17:00',title:'체크인 피크 대비',cat:'운영',cls:'b-red',sub:'체크인 12건 · 키 발급 준비',done:false},
+  {id:4,date:'2026-05-12',time:'17:00',title:'저녁 운영 점검',cat:'운영',cls:'b-red',sub:'프런트 · 객실 상태 확인',done:false},
   {id:5,date:'2026-05-12',time:'22:00',title:'야간 순찰',cat:'점검',cls:'b-amber',sub:'1F 로비 · B1 주차장',done:true}
 ];
 let scheduleIdCounter=6;
